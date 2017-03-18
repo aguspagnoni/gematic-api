@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Catgories", type: :request do
-  describe "GET /catgories" do
+RSpec.describe "Categories", type: :request do
+  describe "GET /categories" do
     it "works! (now write some real specs)" do
-      get catgories_path
+      get categories_path
       expect(response).to have_http_status(200)
     end
   end

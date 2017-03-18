@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :price_lists
   resources :billing_infos
   resources :clients
-  resources :catgories
+  resources :categories
   resources :claims
   resources :orders
   resources :products

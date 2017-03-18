@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :catgory do
+  factory :category do
     name "MyString"
   end
 end

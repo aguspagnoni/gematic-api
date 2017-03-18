@@ -35,12 +35,12 @@ ActiveRecord::Schema.define(version: 20170228223004) do
     t.index ["client_id"], name: "index_billing_infos_on_client_id", using: :btree
   end
 
-  create_table "catgories", force: :cascade do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.integer  "category_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["category_id"], name: "index_catgories_on_category_id", using: :btree
+    t.index ["category_id"], name: "index_categories_on_category_id", using: :btree
   end
 
   create_table "claims", force: :cascade do |t|
