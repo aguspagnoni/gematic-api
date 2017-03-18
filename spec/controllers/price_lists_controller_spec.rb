@@ -52,13 +52,6 @@ RSpec.describe PriceListsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new price_list as @price_list" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:price_list)).to be_a_new(PriceList)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested price_list as @price_list" do
       price_list = PriceList.create! valid_attributes

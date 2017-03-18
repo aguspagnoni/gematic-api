@@ -81,8 +81,10 @@ ActiveRecord::Schema.define(version: 20170228223004) do
   create_table "orders", force: :cascade do |t|
     t.integer  "status",        default: 0
     t.date     "delivery_date"
+    t.integer  "client_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.index ["client_id"], name: "index_orders_on_client_id", using: :btree
   end
 
   create_table "orders_products", id: false, force: :cascade do |t|

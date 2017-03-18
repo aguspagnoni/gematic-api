@@ -7,16 +7,8 @@ RSpec.describe BillingInfosController, type: :routing do
       expect(:get => "/billing_infos").to route_to("billing_infos#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/billing_infos/new").to route_to("billing_infos#new")
-    end
-
     it "routes to #show" do
       expect(:get => "/billing_infos/1").to route_to("billing_infos#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      expect(:get => "/billing_infos/1/edit").to route_to("billing_infos#edit", :id => "1")
     end
 
     it "routes to #create" do

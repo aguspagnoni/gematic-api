@@ -7,16 +7,8 @@ RSpec.describe ClaimsController, type: :routing do
       expect(:get => "/claims").to route_to("claims#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/claims/new").to route_to("claims#new")
-    end
-
     it "routes to #show" do
       expect(:get => "/claims/1").to route_to("claims#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      expect(:get => "/claims/1/edit").to route_to("claims#edit", :id => "1")
     end
 
     it "routes to #create" do

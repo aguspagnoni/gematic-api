@@ -52,13 +52,6 @@ RSpec.describe BillingInfosController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new billing_info as @billing_info" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:billing_info)).to be_a_new(BillingInfo)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested billing_info as @billing_info" do
       billing_info = BillingInfo.create! valid_attributes

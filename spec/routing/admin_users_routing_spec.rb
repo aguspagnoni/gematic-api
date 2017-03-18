@@ -7,16 +7,8 @@ RSpec.describe AdminUsersController, type: :routing do
       expect(:get => "/admin_users").to route_to("admin_users#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/admin_users/new").to route_to("admin_users#new")
-    end
-
     it "routes to #show" do
       expect(:get => "/admin_users/1").to route_to("admin_users#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      expect(:get => "/admin_users/1/edit").to route_to("admin_users#edit", :id => "1")
     end
 
     it "routes to #create" do

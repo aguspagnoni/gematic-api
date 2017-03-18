@@ -52,13 +52,6 @@ RSpec.describe AdminUsersController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new admin_user as @admin_user" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:admin_user)).to be_a_new(AdminUser)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested admin_user as @admin_user" do
       admin_user = AdminUser.create! valid_attributes

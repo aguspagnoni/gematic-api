@@ -7,16 +7,8 @@ RSpec.describe CatgoriesController, type: :routing do
       expect(:get => "/catgories").to route_to("catgories#index")
     end
 
-    it "routes to #new" do
-      expect(:get => "/catgories/new").to route_to("catgories#new")
-    end
-
     it "routes to #show" do
       expect(:get => "/catgories/1").to route_to("catgories#show", :id => "1")
-    end
-
-    it "routes to #edit" do
-      expect(:get => "/catgories/1/edit").to route_to("catgories#edit", :id => "1")
     end
 
     it "routes to #create" do

@@ -52,13 +52,6 @@ RSpec.describe CatgoriesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new catgory as @catgory" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:catgory)).to be_a_new(Catgory)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested catgory as @catgory" do
       catgory = Catgory.create! valid_attributes

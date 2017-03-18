@@ -52,13 +52,6 @@ RSpec.describe ClaimsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new claim as @claim" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:claim)).to be_a_new(Claim)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested claim as @claim" do
       claim = Claim.create! valid_attributes

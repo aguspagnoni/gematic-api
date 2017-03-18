@@ -52,13 +52,6 @@ RSpec.describe DiscountsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new discount as @discount" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:discount)).to be_a_new(Discount)
-    end
-  end
-
   describe "GET #edit" do
     it "assigns the requested discount as @discount" do
       discount = Discount.create! valid_attributes
