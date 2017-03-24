@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  if Rails.env.development?
+    mount Localtower::Engine, at: "localtower"
+  end
   resources :admin_users
   resources :discounts
   resources :price_lists
