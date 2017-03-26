@@ -39,13 +39,14 @@ class DiscountsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_discount
-      @discount = Discount.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def discount_params
-      params.require(:discount).permit(:percentage)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_discount
+    @discount = Discount.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def discount_params
+    params.require(:discount).permit(:percentage)
+  end
 end

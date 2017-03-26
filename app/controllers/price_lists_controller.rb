@@ -39,13 +39,14 @@ class PriceListsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_price_list
-      @price_list = PriceList.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def price_list_params
-      params.fetch(:price_list, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_price_list
+    @price_list = PriceList.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def price_list_params
+    params.fetch(:price_list, {})
+  end
 end

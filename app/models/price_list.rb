@@ -7,6 +7,6 @@ class PriceList < ApplicationRecord
   end
 
   def details
-    discounts.map { |discount| [{discount: discount, product: discount.product}] }
+    discounts.map { |discount| [{ discount: discount, product: discount.product }] }
   end
 end

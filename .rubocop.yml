@@ -30,3 +30,7 @@ Style/NumericPredicate:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Style/StringLiterals:
+  Exclude:
+    - 'spec/**/*'

@@ -39,13 +39,14 @@ class AdminUsersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_user
-      @admin_user = AdminUser.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def admin_user_params
-      params.require(:admin_user).permit(:privilege, :name, :email, :family_name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_user
+    @admin_user = AdminUser.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def admin_user_params
+    params.require(:admin_user).permit(:privilege, :name, :email, :family_name)
+  end
 end

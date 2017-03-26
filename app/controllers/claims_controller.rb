@@ -39,13 +39,14 @@ class ClaimsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_claim
-      @claim = Claim.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def claim_params
-      params.require(:claim).permit(:description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_claim
+    @claim = Claim.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def claim_params
+    params.require(:claim).permit(:description)
+  end
 end
