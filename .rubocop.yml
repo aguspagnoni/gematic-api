@@ -1,0 +1,32 @@
+# This is the configuration used to check the rubocop source code.
+
+# inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - db/schema.rb
+
+Metrics/MethodLength:
+  Max: 10 # TODO: Try to lower when possible
+
+Metrics/LineLength:
+  Max: 120
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Documentation:
+  Enabled: false
+
+HasAndBelongsToMany:
+  Enabled: false
+
+Style/NumericPredicate:
+  Exclude:
+    - 'spec/**/*'
+
+# Style/RaiseArgs:
+#   Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :discount do
-    percentage "MyString"
+    cents Faker::Number.number(2)
   end
 end
