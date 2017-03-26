@@ -2,30 +2,28 @@ require "rails_helper"
 
 RSpec.describe DiscountsController, type: :routing do
   describe "routing" do
-
     it "routes to #index" do
-      expect(:get => "/discounts").to route_to("discounts#index")
+      expect(get: "/discounts").to route_to("discounts#index")
     end
 
     it "routes to #show" do
-      expect(:get => "/discounts/1").to route_to("discounts#show", :id => "1")
+      expect(get: "/discounts/1").to route_to("discounts#show", id: "1")
     end
 
     it "routes to #create" do
-      expect(:post => "/discounts").to route_to("discounts#create")
+      expect(post: "/discounts").to route_to("discounts#create")
     end
 
     it "routes to #update via PUT" do
-      expect(:put => "/discounts/1").to route_to("discounts#update", :id => "1")
+      expect(put: "/discounts/1").to route_to("discounts#update", id: "1")
     end
 
     it "routes to #update via PATCH" do
-      expect(:patch => "/discounts/1").to route_to("discounts#update", :id => "1")
+      expect(patch: "/discounts/1").to route_to("discounts#update", id: "1")
     end
 
     it "routes to #destroy" do
-      expect(:delete => "/discounts/1").to route_to("discounts#destroy", :id => "1")
+      expect(delete: "/discounts/1").to route_to("discounts#destroy", id: "1")
     end
-
   end
 end

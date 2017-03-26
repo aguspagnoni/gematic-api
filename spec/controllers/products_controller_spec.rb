@@ -19,17 +19,16 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ProductsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Product. As you add validations to Product, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     skip("Add a hash of attributes valid for your model")
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     skip("Add a hash of attributes invalid for your model")
-  }
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -47,7 +46,7 @@ RSpec.describe ProductsController, type: :controller do
   describe "GET #show" do
     it "assigns the requested product as @product" do
       product = Product.create! valid_attributes
-      get :show, params: {id: product.to_param}, session: valid_session
+      get :show, params: { id: product.to_param }, session: valid_session
       expect(assigns(:product)).to eq(product)
     end
   end
@@ -55,7 +54,7 @@ RSpec.describe ProductsController, type: :controller do
   describe "GET #edit" do
     it "assigns the requested product as @product" do
       product = Product.create! valid_attributes
-      get :edit, params: {id: product.to_param}, session: valid_session
+      get :edit, params: { id: product.to_param }, session: valid_session
       expect(assigns(:product)).to eq(product)
     end
   end
@@ -64,30 +63,30 @@ RSpec.describe ProductsController, type: :controller do
     context "with valid params" do
       it "creates a new Product" do
         expect {
-          post :create, params: {product: valid_attributes}, session: valid_session
+          post :create, params: { product: valid_attributes }, session: valid_session
         }.to change(Product, :count).by(1)
       end
 
       it "assigns a newly created product as @product" do
-        post :create, params: {product: valid_attributes}, session: valid_session
+        post :create, params: { product: valid_attributes }, session: valid_session
         expect(assigns(:product)).to be_a(Product)
         expect(assigns(:product)).to be_persisted
       end
 
       it "redirects to the created product" do
-        post :create, params: {product: valid_attributes}, session: valid_session
+        post :create, params: { product: valid_attributes }, session: valid_session
         expect(response).to redirect_to(Product.last)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved product as @product" do
-        post :create, params: {product: invalid_attributes}, session: valid_session
+        post :create, params: { product: invalid_attributes }, session: valid_session
         expect(assigns(:product)).to be_a_new(Product)
       end
 
       it "re-renders the 'new' template" do
-        post :create, params: {product: invalid_attributes}, session: valid_session
+        post :create, params: { product: invalid_attributes }, session: valid_session
         expect(response).to render_template("new")
       end
     end
@@ -101,20 +100,20 @@ RSpec.describe ProductsController, type: :controller do
 
       it "updates the requested product" do
         product = Product.create! valid_attributes
-        put :update, params: {id: product.to_param, product: new_attributes}, session: valid_session
+        put :update, params: { id: product.to_param, product: new_attributes }, session: valid_session
         product.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested product as @product" do
         product = Product.create! valid_attributes
-        put :update, params: {id: product.to_param, product: valid_attributes}, session: valid_session
+        put :update, params: { id: product.to_param, product: valid_attributes }, session: valid_session
         expect(assigns(:product)).to eq(product)
       end
 
       it "redirects to the product" do
         product = Product.create! valid_attributes
-        put :update, params: {id: product.to_param, product: valid_attributes}, session: valid_session
+        put :update, params: { id: product.to_param, product: valid_attributes }, session: valid_session
         expect(response).to redirect_to(product)
       end
     end
@@ -122,13 +121,13 @@ RSpec.describe ProductsController, type: :controller do
     context "with invalid params" do
       it "assigns the product as @product" do
         product = Product.create! valid_attributes
-        put :update, params: {id: product.to_param, product: invalid_attributes}, session: valid_session
+        put :update, params: { id: product.to_param, product: invalid_attributes }, session: valid_session
         expect(assigns(:product)).to eq(product)
       end
 
       it "re-renders the 'edit' template" do
         product = Product.create! valid_attributes
-        put :update, params: {id: product.to_param, product: invalid_attributes}, session: valid_session
+        put :update, params: { id: product.to_param, product: invalid_attributes }, session: valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -138,15 +137,14 @@ RSpec.describe ProductsController, type: :controller do
     it "destroys the requested product" do
       product = Product.create! valid_attributes
       expect {
-        delete :destroy, params: {id: product.to_param}, session: valid_session
+        delete :destroy, params: { id: product.to_param }, session: valid_session
       }.to change(Product, :count).by(-1)
     end
 
     it "redirects to the products list" do
       product = Product.create! valid_attributes
-      delete :destroy, params: {id: product.to_param}, session: valid_session
+      delete :destroy, params: { id: product.to_param }, session: valid_session
       expect(response).to redirect_to(products_url)
     end
   end
-
 end

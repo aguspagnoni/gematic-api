@@ -19,17 +19,16 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe DiscountsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Discount. As you add validations to Discount, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     skip("Add a hash of attributes valid for your model")
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     skip("Add a hash of attributes invalid for your model")
-  }
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -47,7 +46,7 @@ RSpec.describe DiscountsController, type: :controller do
   describe "GET #show" do
     it "assigns the requested discount as @discount" do
       discount = Discount.create! valid_attributes
-      get :show, params: {id: discount.to_param}, session: valid_session
+      get :show, params: { id: discount.to_param }, session: valid_session
       expect(assigns(:discount)).to eq(discount)
     end
   end
@@ -55,7 +54,7 @@ RSpec.describe DiscountsController, type: :controller do
   describe "GET #edit" do
     it "assigns the requested discount as @discount" do
       discount = Discount.create! valid_attributes
-      get :edit, params: {id: discount.to_param}, session: valid_session
+      get :edit, params: { id: discount.to_param }, session: valid_session
       expect(assigns(:discount)).to eq(discount)
     end
   end
@@ -64,30 +63,30 @@ RSpec.describe DiscountsController, type: :controller do
     context "with valid params" do
       it "creates a new Discount" do
         expect {
-          post :create, params: {discount: valid_attributes}, session: valid_session
+          post :create, params: { discount: valid_attributes }, session: valid_session
         }.to change(Discount, :count).by(1)
       end
 
       it "assigns a newly created discount as @discount" do
-        post :create, params: {discount: valid_attributes}, session: valid_session
+        post :create, params: { discount: valid_attributes }, session: valid_session
         expect(assigns(:discount)).to be_a(Discount)
         expect(assigns(:discount)).to be_persisted
       end
 
       it "redirects to the created discount" do
-        post :create, params: {discount: valid_attributes}, session: valid_session
+        post :create, params: { discount: valid_attributes }, session: valid_session
         expect(response).to redirect_to(Discount.last)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved discount as @discount" do
-        post :create, params: {discount: invalid_attributes}, session: valid_session
+        post :create, params: { discount: invalid_attributes }, session: valid_session
         expect(assigns(:discount)).to be_a_new(Discount)
       end
 
       it "re-renders the 'new' template" do
-        post :create, params: {discount: invalid_attributes}, session: valid_session
+        post :create, params: { discount: invalid_attributes }, session: valid_session
         expect(response).to render_template("new")
       end
     end
@@ -101,20 +100,20 @@ RSpec.describe DiscountsController, type: :controller do
 
       it "updates the requested discount" do
         discount = Discount.create! valid_attributes
-        put :update, params: {id: discount.to_param, discount: new_attributes}, session: valid_session
+        put :update, params: { id: discount.to_param, discount: new_attributes }, session: valid_session
         discount.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested discount as @discount" do
         discount = Discount.create! valid_attributes
-        put :update, params: {id: discount.to_param, discount: valid_attributes}, session: valid_session
+        put :update, params: { id: discount.to_param, discount: valid_attributes }, session: valid_session
         expect(assigns(:discount)).to eq(discount)
       end
 
       it "redirects to the discount" do
         discount = Discount.create! valid_attributes
-        put :update, params: {id: discount.to_param, discount: valid_attributes}, session: valid_session
+        put :update, params: { id: discount.to_param, discount: valid_attributes }, session: valid_session
         expect(response).to redirect_to(discount)
       end
     end
@@ -122,13 +121,13 @@ RSpec.describe DiscountsController, type: :controller do
     context "with invalid params" do
       it "assigns the discount as @discount" do
         discount = Discount.create! valid_attributes
-        put :update, params: {id: discount.to_param, discount: invalid_attributes}, session: valid_session
+        put :update, params: { id: discount.to_param, discount: invalid_attributes }, session: valid_session
         expect(assigns(:discount)).to eq(discount)
       end
 
       it "re-renders the 'edit' template" do
         discount = Discount.create! valid_attributes
-        put :update, params: {id: discount.to_param, discount: invalid_attributes}, session: valid_session
+        put :update, params: { id: discount.to_param, discount: invalid_attributes }, session: valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -138,15 +137,14 @@ RSpec.describe DiscountsController, type: :controller do
     it "destroys the requested discount" do
       discount = Discount.create! valid_attributes
       expect {
-        delete :destroy, params: {id: discount.to_param}, session: valid_session
+        delete :destroy, params: { id: discount.to_param }, session: valid_session
       }.to change(Discount, :count).by(-1)
     end
 
     it "redirects to the discounts list" do
       discount = Discount.create! valid_attributes
-      delete :destroy, params: {id: discount.to_param}, session: valid_session
+      delete :destroy, params: { id: discount.to_param }, session: valid_session
       expect(response).to redirect_to(discounts_url)
     end
   end
-
 end

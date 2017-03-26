@@ -19,17 +19,16 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PriceListsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # PriceList. As you add validations to PriceList, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     skip("Add a hash of attributes valid for your model")
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     skip("Add a hash of attributes invalid for your model")
-  }
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -47,7 +46,7 @@ RSpec.describe PriceListsController, type: :controller do
   describe "GET #show" do
     it "assigns the requested price_list as @price_list" do
       price_list = PriceList.create! valid_attributes
-      get :show, params: {id: price_list.to_param}, session: valid_session
+      get :show, params: { id: price_list.to_param }, session: valid_session
       expect(assigns(:price_list)).to eq(price_list)
     end
   end
@@ -55,7 +54,7 @@ RSpec.describe PriceListsController, type: :controller do
   describe "GET #edit" do
     it "assigns the requested price_list as @price_list" do
       price_list = PriceList.create! valid_attributes
-      get :edit, params: {id: price_list.to_param}, session: valid_session
+      get :edit, params: { id: price_list.to_param }, session: valid_session
       expect(assigns(:price_list)).to eq(price_list)
     end
   end
@@ -64,30 +63,30 @@ RSpec.describe PriceListsController, type: :controller do
     context "with valid params" do
       it "creates a new PriceList" do
         expect {
-          post :create, params: {price_list: valid_attributes}, session: valid_session
+          post :create, params: { price_list: valid_attributes }, session: valid_session
         }.to change(PriceList, :count).by(1)
       end
 
       it "assigns a newly created price_list as @price_list" do
-        post :create, params: {price_list: valid_attributes}, session: valid_session
+        post :create, params: { price_list: valid_attributes }, session: valid_session
         expect(assigns(:price_list)).to be_a(PriceList)
         expect(assigns(:price_list)).to be_persisted
       end
 
       it "redirects to the created price_list" do
-        post :create, params: {price_list: valid_attributes}, session: valid_session
+        post :create, params: { price_list: valid_attributes }, session: valid_session
         expect(response).to redirect_to(PriceList.last)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved price_list as @price_list" do
-        post :create, params: {price_list: invalid_attributes}, session: valid_session
+        post :create, params: { price_list: invalid_attributes }, session: valid_session
         expect(assigns(:price_list)).to be_a_new(PriceList)
       end
 
       it "re-renders the 'new' template" do
-        post :create, params: {price_list: invalid_attributes}, session: valid_session
+        post :create, params: { price_list: invalid_attributes }, session: valid_session
         expect(response).to render_template("new")
       end
     end
@@ -101,20 +100,20 @@ RSpec.describe PriceListsController, type: :controller do
 
       it "updates the requested price_list" do
         price_list = PriceList.create! valid_attributes
-        put :update, params: {id: price_list.to_param, price_list: new_attributes}, session: valid_session
+        put :update, params: { id: price_list.to_param, price_list: new_attributes }, session: valid_session
         price_list.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested price_list as @price_list" do
         price_list = PriceList.create! valid_attributes
-        put :update, params: {id: price_list.to_param, price_list: valid_attributes}, session: valid_session
+        put :update, params: { id: price_list.to_param, price_list: valid_attributes }, session: valid_session
         expect(assigns(:price_list)).to eq(price_list)
       end
 
       it "redirects to the price_list" do
         price_list = PriceList.create! valid_attributes
-        put :update, params: {id: price_list.to_param, price_list: valid_attributes}, session: valid_session
+        put :update, params: { id: price_list.to_param, price_list: valid_attributes }, session: valid_session
         expect(response).to redirect_to(price_list)
       end
     end
@@ -122,13 +121,13 @@ RSpec.describe PriceListsController, type: :controller do
     context "with invalid params" do
       it "assigns the price_list as @price_list" do
         price_list = PriceList.create! valid_attributes
-        put :update, params: {id: price_list.to_param, price_list: invalid_attributes}, session: valid_session
+        put :update, params: { id: price_list.to_param, price_list: invalid_attributes }, session: valid_session
         expect(assigns(:price_list)).to eq(price_list)
       end
 
       it "re-renders the 'edit' template" do
         price_list = PriceList.create! valid_attributes
-        put :update, params: {id: price_list.to_param, price_list: invalid_attributes}, session: valid_session
+        put :update, params: { id: price_list.to_param, price_list: invalid_attributes }, session: valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -138,15 +137,14 @@ RSpec.describe PriceListsController, type: :controller do
     it "destroys the requested price_list" do
       price_list = PriceList.create! valid_attributes
       expect {
-        delete :destroy, params: {id: price_list.to_param}, session: valid_session
+        delete :destroy, params: { id: price_list.to_param }, session: valid_session
       }.to change(PriceList, :count).by(-1)
     end
 
     it "redirects to the price_lists list" do
       price_list = PriceList.create! valid_attributes
-      delete :destroy, params: {id: price_list.to_param}, session: valid_session
+      delete :destroy, params: { id: price_list.to_param }, session: valid_session
       expect(response).to redirect_to(price_lists_url)
     end
   end
-
 end

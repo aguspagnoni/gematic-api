@@ -19,17 +19,16 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ClaimsController, type: :controller do
-
   # This should return the minimal set of attributes required to create a valid
   # Claim. As you add validations to Claim, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
+  let(:valid_attributes) do
     skip("Add a hash of attributes valid for your model")
-  }
+  end
 
-  let(:invalid_attributes) {
+  let(:invalid_attributes) do
     skip("Add a hash of attributes invalid for your model")
-  }
+  end
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -47,7 +46,7 @@ RSpec.describe ClaimsController, type: :controller do
   describe "GET #show" do
     it "assigns the requested claim as @claim" do
       claim = Claim.create! valid_attributes
-      get :show, params: {id: claim.to_param}, session: valid_session
+      get :show, params: { id: claim.to_param }, session: valid_session
       expect(assigns(:claim)).to eq(claim)
     end
   end
@@ -55,7 +54,7 @@ RSpec.describe ClaimsController, type: :controller do
   describe "GET #edit" do
     it "assigns the requested claim as @claim" do
       claim = Claim.create! valid_attributes
-      get :edit, params: {id: claim.to_param}, session: valid_session
+      get :edit, params: { id: claim.to_param }, session: valid_session
       expect(assigns(:claim)).to eq(claim)
     end
   end
@@ -64,30 +63,30 @@ RSpec.describe ClaimsController, type: :controller do
     context "with valid params" do
       it "creates a new Claim" do
         expect {
-          post :create, params: {claim: valid_attributes}, session: valid_session
+          post :create, params: { claim: valid_attributes }, session: valid_session
         }.to change(Claim, :count).by(1)
       end
 
       it "assigns a newly created claim as @claim" do
-        post :create, params: {claim: valid_attributes}, session: valid_session
+        post :create, params: { claim: valid_attributes }, session: valid_session
         expect(assigns(:claim)).to be_a(Claim)
         expect(assigns(:claim)).to be_persisted
       end
 
       it "redirects to the created claim" do
-        post :create, params: {claim: valid_attributes}, session: valid_session
+        post :create, params: { claim: valid_attributes }, session: valid_session
         expect(response).to redirect_to(Claim.last)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved claim as @claim" do
-        post :create, params: {claim: invalid_attributes}, session: valid_session
+        post :create, params: { claim: invalid_attributes }, session: valid_session
         expect(assigns(:claim)).to be_a_new(Claim)
       end
 
       it "re-renders the 'new' template" do
-        post :create, params: {claim: invalid_attributes}, session: valid_session
+        post :create, params: { claim: invalid_attributes }, session: valid_session
         expect(response).to render_template("new")
       end
     end
@@ -101,20 +100,20 @@ RSpec.describe ClaimsController, type: :controller do
 
       it "updates the requested claim" do
         claim = Claim.create! valid_attributes
-        put :update, params: {id: claim.to_param, claim: new_attributes}, session: valid_session
+        put :update, params: { id: claim.to_param, claim: new_attributes }, session: valid_session
         claim.reload
         skip("Add assertions for updated state")
       end
 
       it "assigns the requested claim as @claim" do
         claim = Claim.create! valid_attributes
-        put :update, params: {id: claim.to_param, claim: valid_attributes}, session: valid_session
+        put :update, params: { id: claim.to_param, claim: valid_attributes }, session: valid_session
         expect(assigns(:claim)).to eq(claim)
       end
 
       it "redirects to the claim" do
         claim = Claim.create! valid_attributes
-        put :update, params: {id: claim.to_param, claim: valid_attributes}, session: valid_session
+        put :update, params: { id: claim.to_param, claim: valid_attributes }, session: valid_session
         expect(response).to redirect_to(claim)
       end
     end
@@ -122,13 +121,13 @@ RSpec.describe ClaimsController, type: :controller do
     context "with invalid params" do
       it "assigns the claim as @claim" do
         claim = Claim.create! valid_attributes
-        put :update, params: {id: claim.to_param, claim: invalid_attributes}, session: valid_session
+        put :update, params: { id: claim.to_param, claim: invalid_attributes }, session: valid_session
         expect(assigns(:claim)).to eq(claim)
       end
 
       it "re-renders the 'edit' template" do
         claim = Claim.create! valid_attributes
-        put :update, params: {id: claim.to_param, claim: invalid_attributes}, session: valid_session
+        put :update, params: { id: claim.to_param, claim: invalid_attributes }, session: valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -138,15 +137,14 @@ RSpec.describe ClaimsController, type: :controller do
     it "destroys the requested claim" do
       claim = Claim.create! valid_attributes
       expect {
-        delete :destroy, params: {id: claim.to_param}, session: valid_session
+        delete :destroy, params: { id: claim.to_param }, session: valid_session
       }.to change(Claim, :count).by(-1)
     end
 
     it "redirects to the claims list" do
       claim = Claim.create! valid_attributes
-      delete :destroy, params: {id: claim.to_param}, session: valid_session
+      delete :destroy, params: { id: claim.to_param }, session: valid_session
       expect(response).to redirect_to(claims_url)
     end
   end
-
 end

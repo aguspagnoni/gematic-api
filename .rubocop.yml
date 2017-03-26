@@ -34,3 +34,11 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   Exclude:
     - 'spec/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*'
