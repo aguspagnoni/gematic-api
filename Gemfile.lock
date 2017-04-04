@@ -159,6 +159,8 @@ GEM
     ruby-graphviz (1.2.2)
     ruby-progressbar (1.8.1)
     rubyzip (1.2.1)
+    shoulda-matchers (3.1.1)
+      activesupport (>= 4.0.0)
     simplecov (0.14.1)
       docile (~> 1.1.0)
       json (>= 1.8, < 3)
@@ -202,6 +204,7 @@ DEPENDENCIES
   redis (~> 3.0)
   rspec-rails (>= 3.5.0)
   rubocop
+  shoulda-matchers (~> 3.1)
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)

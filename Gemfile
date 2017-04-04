@@ -28,3 +28,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem "localtower" # UI for model management
 end
+
+group :test do
+  gem 'shoulda-matchers', '~> 3.1'
+end
