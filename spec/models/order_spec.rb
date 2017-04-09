@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
-  it { should have_and_belong_to_many :products }
+  it { should have_many :products }
   it { should belong_to :client }
 
   context 'status' do
@@ -17,17 +17,66 @@ RSpec.describe Order, type: :model do
   end
 
   context 'when calculating totals and subtotal' do
-    let(:price_list)      { create(:price_list_with_products) }
-    let(:order)           { create(:order) }
-    let(:expected_gross)  { price_list.products.sum(&:gross_price) }
+    let(:client)      { create(:client) }
+    let(:price_list)  { create(:price_list, client: client) }
+    let(:product_1)   { create(:product, gross_price: 100) }
+    let(:product_2)   { create(:product, gross_price: 200) }
+    let(:product_3)   { create(:product, gross_price: 1000) }
+    let!(:discount_1) { create(:discount, cents: 50, product: product_1, price_list: price_list) }
+    let!(:discount_2) { create(:discount, cents: 150, product: product_2, price_list: price_list) }
+    let(:order)       { create(:order, client: price_list.client) }
+    let(:products)    { [product_1, product_2] }
 
     before do
-      order.products << price_list.products
+      products.map do |product|
+        create(:order_item, product: product, order: order, quantity: 1)
+      end
     end
 
-    it { expect(order.gross_total).not_to eq expected_gross }
+    context 'when all products of an order is inside a price list' do
+      let(:expected_simple_gross)     { 300 } # p1 + p2
+      let(:expected_gross_w_discount) { 100 } # (p1 - d1) + (p2 - d2)
 
-    pending 'add quantity per product and calculate discounted gross'
+      it { expect(order.gross_total).not_to eq expected_simple_gross }
+      it { expect(order.gross_total).to eq expected_gross_w_discount }
+    end
 
+    context 'when some products of an order are inside a price list' do
+      let(:expected_gross_w_discount) { 1100 } # (p1 - d1) + (p2 - d2) + p3
+      let(:products) { [product_1, product_2, product_3] }
+
+      it { expect(order.gross_total).to eq expected_gross_w_discount }
+    end
+
+    context 'when no products of an order are inside a price list' do
+      let(:products) { [product_3] }
+
+      it { expect(order.gross_total).to eq product_3.gross_price }
+    end
+
+    context 'when products are inside price list but belong to different client' do
+      let(:client2)               { create(:client) }
+      let(:order)                 { create(:order, client: client2) }
+      let(:products)              { [product_1, product_2, product_3] }
+      let(:expected_simple_gross) { 1300 } # p1 + p2 + p3
+
+      it { expect(order.gross_total).to eq expected_simple_gross }
+    end
+
+    context 'when there are multiple price_lists that apply for same product' do
+      let(:price_list2)   { create(:price_list, client: client) }
+      let!(:discount_1_1) { create(:discount, cents: 1, product: product_1, price_list: price_list2) }
+      let(:products)      { [product_1, product_2] }
+      let(:expected_gross_w_discount) { 75 } # (p1 - d1_1) + (p2 - d2)
+
+      before do
+        Timecop.travel(price_list.created_at + 2.days)
+        discount_1_1.update!(cents: 75)
+      end
+
+      it 'uses the newest discount for products' do
+        expect(order.gross_total).to eq expected_gross_w_discount
+      end
+    end
   end
 end
