@@ -11,6 +11,11 @@ gem 'redis', '~> 3.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# Image upload needs
+gem 'carrierwave', '~> 1.0'
+gem 'fog-aws'
+gem 'mini_magick'
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '>= 3.5.0'
