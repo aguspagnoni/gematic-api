@@ -1,5 +1,5 @@
 require 'rails_helper'
 
 RSpec.describe Discount, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  pending 'test gross cant be less than actual discount'
 end

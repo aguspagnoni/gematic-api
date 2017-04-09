@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe PriceList, type: :model do
+  let(:client)              { create(:client) }
   let(:gross_price)         { 100 }
   let!(:product_w_discount) { create(:product, gross_price: gross_price) }
   let!(:default_product)    { create(:product, gross_price: gross_price) }
-  let!(:price_list)         { create(:price_list) }
+  let!(:price_list)         { create(:price_list, client: client) }
 
   let!(:discount)           { create(:discount, price_list: price_list, product: product_w_discount) }
   let(:list_details)        { { product: product_w_discount, discount: discount } }
