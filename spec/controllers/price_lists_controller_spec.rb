@@ -19,15 +19,17 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PriceListsController, type: :controller do
+
+  let(:client)  { create(:client) }
   # This should return the minimal set of attributes required to create a valid
   # PriceList. As you add validations to PriceList, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip("Add a hash of attributes valid for your model")
+    { name: 'Super List', client_id: client.id }
   end
 
   let(:invalid_attributes) do
-    skip("Add a hash of attributes invalid for your model")
+    { name: nil }
   end
 
   # This should return the minimal set of values that should be in the session
@@ -51,14 +53,6 @@ RSpec.describe PriceListsController, type: :controller do
     end
   end
 
-  describe "GET #edit" do
-    it "assigns the requested price_list as @price_list" do
-      price_list = PriceList.create! valid_attributes
-      get :edit, params: { id: price_list.to_param }, session: valid_session
-      expect(assigns(:price_list)).to eq(price_list)
-    end
-  end
-
   describe "POST #create" do
     context "with valid params" do
       it "creates a new PriceList" do
@@ -75,7 +69,7 @@ RSpec.describe PriceListsController, type: :controller do
 
       it "redirects to the created price_list" do
         post :create, params: { price_list: valid_attributes }, session: valid_session
-        expect(response).to redirect_to(PriceList.last)
+        expect(response.body).to match (PriceList.last.to_json)
       end
     end
 
@@ -85,36 +79,41 @@ RSpec.describe PriceListsController, type: :controller do
         expect(assigns(:price_list)).to be_a_new(PriceList)
       end
 
-      it "re-renders the 'new' template" do
-        post :create, params: { price_list: invalid_attributes }, session: valid_session
-        expect(response).to render_template("new")
+      it "does not use extra parameters" do
+        extra_attribute = { next_price_list_id: 99 }
+        post :create, params: { price_list: valid_attributes.merge(extra_attribute) },
+                      session: valid_session
+        expect(PriceList.last.next_price_list_id).not_to eq extra_attribute[:next_price_list_id]
       end
     end
   end
 
   describe "PUT #update" do
     context "with valid params" do
+      let(:new_name) { 'Another awesome name' }
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { name: new_name, valid_since: Date.today, expires: Date.tomorrow }
       }
 
       it "updates the requested price_list" do
         price_list = PriceList.create! valid_attributes
         put :update, params: { id: price_list.to_param, price_list: new_attributes }, session: valid_session
         price_list.reload
-        skip("Add assertions for updated state")
+        expect(price_list.next_price_list).to eq PriceList.last
+        expect(price_list.next_price_list.name).to eq new_name
       end
 
       it "assigns the requested price_list as @price_list" do
         price_list = PriceList.create! valid_attributes
         put :update, params: { id: price_list.to_param, price_list: valid_attributes }, session: valid_session
-        expect(assigns(:price_list)).to eq(price_list)
+        price_list.reload
+        expect(assigns(:price_list)).to eq(price_list.next_price_list)
       end
 
-      it "redirects to the price_list" do
+      it "renders next price_list json" do
         price_list = PriceList.create! valid_attributes
         put :update, params: { id: price_list.to_param, price_list: valid_attributes }, session: valid_session
-        expect(response).to redirect_to(price_list)
+        expect(response.body).to match price_list.next_price_list.to_json
       end
     end
 
@@ -125,10 +124,10 @@ RSpec.describe PriceListsController, type: :controller do
         expect(assigns(:price_list)).to eq(price_list)
       end
 
-      it "re-renders the 'edit' template" do
+      it "re-renders the price_list json" do
         price_list = PriceList.create! valid_attributes
         put :update, params: { id: price_list.to_param, price_list: invalid_attributes }, session: valid_session
-        expect(response).to render_template("edit")
+        expect(response.body).to include('name').and include('blank')
       end
     end
   end
@@ -144,7 +143,7 @@ RSpec.describe PriceListsController, type: :controller do
     it "redirects to the price_lists list" do
       price_list = PriceList.create! valid_attributes
       delete :destroy, params: { id: price_list.to_param }, session: valid_session
-      expect(response).to redirect_to(price_lists_url)
+      expect(response).to have_http_status :no_content
     end
   end
 end

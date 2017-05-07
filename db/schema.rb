@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170409200925) do
+ActiveRecord::Schema.define(version: 20170507184448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,10 +108,12 @@ ActiveRecord::Schema.define(version: 20170409200925) do
     t.date     "valid_since"
     t.integer  "client_id"
     t.integer  "admin_user_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "next_price_list_id"
     t.index ["admin_user_id"], name: "index_price_lists_on_admin_user_id", using: :btree
     t.index ["client_id"], name: "index_price_lists_on_client_id", using: :btree
+    t.index ["next_price_list_id"], name: "index_price_lists_on_next_price_list_id", using: :btree
   end
 
   create_table "products", force: :cascade do |t|
@@ -126,4 +128,5 @@ ActiveRecord::Schema.define(version: 20170409200925) do
     t.index ["code"], name: "index_products_on_code", unique: true, using: :btree
   end
 
+  add_foreign_key "price_lists", "price_lists", column: "next_price_list_id"
 end

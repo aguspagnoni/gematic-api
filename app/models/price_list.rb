@@ -2,9 +2,21 @@ class PriceList < ApplicationRecord
   has_many   :discounts
   has_many   :products, through: :discounts
   belongs_to :client
+  belongs_to :next_price_list, class_name: 'PriceList',
+                               foreign_key: 'next_price_list_id',
+                               optional: true
+
+
+  validates :name, presence: true
+  validate  :non_recursive, on: :update
+
+  PERMITED_PARAMS = column_names - %w(id created_at updated_at next_price_list_id)
+  RECURSIVE_MSG   = 'must be different from parent PriceList'.freeze
 
   before_update do
-    raise ActiveRecord::RecordNotSaved.new('Use business logic `update_new_copy` instead')
+    if !@called_from_inside
+      raise ActiveRecord::RecordNotSaved.new('Use business logic `update_new_copy` instead')
+    end
   end
 
   def details
@@ -14,6 +26,15 @@ class PriceList < ApplicationRecord
   def update_new_copy(params)
     price_list_copy = self.dup
     params.each { |k, v| price_list_copy.send("#{k}=", v) }
-    price_list_copy.save!
+    @called_from_inside = true
+    price_list_copy.save
+    update(next_price_list: price_list_copy)
+    price_list_copy
+  end
+
+  private
+
+  def non_recursive
+    errors.add(:next_price_list_id, RECURSIVE_MSG) if persisted? && id == next_price_list_id
   end
 end

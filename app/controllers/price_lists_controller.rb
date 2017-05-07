@@ -26,10 +26,14 @@ class PriceListsController < ApplicationController
 
   # PATCH/PUT /price_lists/1
   def update
-    if @price_list.update(price_list_params)
+    old_price_list = @price_list
+    @price_list = @price_list.update_new_copy(price_list_params)
+    if @price_list.valid?
       render json: @price_list
     else
-      render json: @price_list.errors, status: :unprocessable_entity
+      error_message = old_price_list.errors.messages.merge(@price_list.errors.messages)
+      @price_list = old_price_list
+      render json: error_message, status: :unprocessable_entity
     end
   end
 
@@ -47,6 +51,6 @@ class PriceListsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def price_list_params
-    params.fetch(:price_list, {})
+    params.fetch(:price_list, {}).permit(PriceList::PERMITED_PARAMS)
   end
 end
