@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :price_list do
+    name { Faker::Lorem.sentence(3) }
   end
 
   factory :price_list_with_products, parent: :price_list do

@@ -16,4 +16,19 @@ RSpec.describe PriceList, type: :model do
   it 'has details of those products that a discount is applied' do
     expect(price_list.details).to match_array(a_hash_including(list_details))
   end
+
+  describe 'on update' do
+    let(:new_name) { 'new name' }
+
+    it 'leaves original list intact and creates new one with new parameters' do
+      expect { price_list.update_new_copy(name: new_name) }
+        .to change(PriceList, :count).by(1)
+        .and not_change(price_list, :name)
+      expect(PriceList.last.name).to eq new_name
+    end
+
+    it 'throws error when trying to update a list without creating new one' do
+      expect { price_list.update(name: new_name) }.to raise_error(ActiveRecord::RecordNotSaved)
+    end
+  end
 end
