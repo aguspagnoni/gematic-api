@@ -22,3 +22,4 @@
 
 # Ignore Rspec's results file
 spec/examples.txt 
+.DS_Store
