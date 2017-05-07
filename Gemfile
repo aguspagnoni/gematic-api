@@ -16,6 +16,9 @@ gem 'carrierwave', '~> 1.0'
 gem 'fog-aws'
 gem 'mini_magick'
 
+# Error handling
+gem 'rollbar'
+
 group :development, :test do
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '>= 3.5.0'
