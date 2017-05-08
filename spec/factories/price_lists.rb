@@ -11,7 +11,7 @@ FactoryGirl.define do
         product = FactoryGirl.create(:product)
         FactoryGirl.create(:discount, product: product, price_list: price_list)
       end
-      price_list.save!
+      price_list.save! # TODO: FIXME!
     end
   end
 
