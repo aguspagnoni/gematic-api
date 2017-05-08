@@ -31,4 +31,22 @@ RSpec.describe PriceList, type: :model do
       expect { price_list.update(name: new_name) }.to raise_error(ActiveRecord::RecordNotSaved)
     end
   end
+
+  describe 'validity dates' do
+    let(:valid_since)      { Date.new(2017, 1, 1) }
+    let(:valid_expires)    { valid_since + 1.day }
+    let(:invalid_expires)  { valid_since }
+    let(:invalid_msg)      { I18n.t 'errors.messages.expires_validation' }
+
+    it 'allows greater than valid_since dates for expire' do
+      price_list = create(:price_list_with_client, valid_since: valid_since, expires: valid_expires)
+      expect(price_list).to be_valid
+    end
+
+    it 'doesnt allow invalid dates' do
+      invalid = build(:price_list_with_client, valid_since: valid_since, expires: invalid_expires)
+      expect(invalid.valid?).to be false
+      expect(invalid.errors.messages[:expires].first).to eq invalid_msg
+    end
+  end
 end

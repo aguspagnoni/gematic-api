@@ -1,0 +1,6 @@
+es:
+  errors:
+    messages:
+      record_invalid: el objeto es invalido
+      expires_validation: tiene que ser posterior a la fecha de activación
+      price_list_recursion: tiene que ser distinto a la siguiente lista

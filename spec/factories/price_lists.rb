@@ -1,6 +1,8 @@
 FactoryGirl.define do
   factory :price_list do
-    name { Faker::Lorem.sentence(3) }
+    name        { Faker::Lorem.sentence(3) }
+    valid_since { Date.today }
+    expires     { Date.today + 1.day }
   end
 
   factory :price_list_with_products, parent: :price_list do
@@ -11,5 +13,9 @@ FactoryGirl.define do
       end
       price_list.save!
     end
+  end
+
+  factory :price_list_with_client, parent: :price_list do
+    client
   end
 end
