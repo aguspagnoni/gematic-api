@@ -10,7 +10,7 @@ RSpec.describe Discount, type: :model do
     let(:product)      { price_list.products.first }
 
     it 'select correct discount' do
-      discount = Discount.for(client, product)
+      discount = Discount.for_client_and_product(client, product)
       expect(discount.product).to eq product
       expect(discount.client).to eq client
     end

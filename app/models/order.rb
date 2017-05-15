@@ -9,7 +9,8 @@ class Order < ApplicationRecord
 
   def gross_total
     order_items.map do |item|
-      item.quantity * (item.product.gross_price - Discount.for_client_and_product(client, item.product))
+      discount = Discount.for_client_and_product(client, item.product)
+      item.quantity * (item.product.gross_price - discount.cents)
     end.sum
   end
 end

@@ -11,7 +11,8 @@ FactoryGirl.define do
         product = FactoryGirl.create(:product)
         FactoryGirl.create(:discount, product: product, price_list: price_list)
       end
-      price_list.save! # TODO: FIXME!
+      price_list.instance_variable_set(:@called_from_inside, true)
+      price_list.save!
     end
   end
 
