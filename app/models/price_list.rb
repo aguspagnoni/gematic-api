@@ -1,7 +1,7 @@
 class PriceList < ApplicationRecord
   has_many   :discounts
   has_many   :products, through: :discounts
-  belongs_to :client
+  belongs_to :company
   belongs_to :next_price_list, class_name: 'PriceList',
                                foreign_key: 'next_price_list_id',
                                optional: true

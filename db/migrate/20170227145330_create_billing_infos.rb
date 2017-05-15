@@ -5,7 +5,7 @@ class CreateBillingInfos < ActiveRecord::Migration[5.0]
       t.string     :cuit
       t.string     :condition
       t.string     :razon_social
-      t.references :client
+      t.references :company
       t.timestamps
     end
   end

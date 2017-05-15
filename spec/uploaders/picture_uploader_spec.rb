@@ -4,8 +4,8 @@ require 'rails_helper'
 describe PictureUploader do
   include CarrierWave::Test::Matchers
 
-  let(:client)      { create(:client) }
-  let(:uploader)    { PictureUploader.new(client, :image) }
+  let(:user)        { create(:user) }
+  let(:uploader)    { PictureUploader.new(user, :image) }
   let(:image_path)  { 'tmp/image_test.jpg' }
 
   before do

@@ -20,16 +20,16 @@ require 'rails_helper'
 
 RSpec.describe PriceListsController, type: :controller do
 
-  let(:client)  { create(:client) }
+  let(:company)  { create(:company) }
   # This should return the minimal set of attributes required to create a valid
   # PriceList. As you add validations to PriceList, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    { name: 'Super List', client_id: client.id }
+    { name: 'Super List', company_id: company.id, expires: Date.tomorrow, valid_since: Date.today }
   end
 
   let(:invalid_attributes) do
-    { name: nil }
+    { name: nil, expires: Date.yesterday, valid_since: Date.today }
   end
 
   # This should return the minimal set of values that should be in the session

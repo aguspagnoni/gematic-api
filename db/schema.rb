@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170507184448) do
+ActiveRecord::Schema.define(version: 20170515040347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,10 +30,10 @@ ActiveRecord::Schema.define(version: 20170507184448) do
     t.string   "cuit"
     t.string   "condition"
     t.string   "razon_social"
-    t.integer  "client_id"
+    t.integer  "company_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["client_id"], name: "index_billing_infos_on_client_id", using: :btree
+    t.index ["company_id"], name: "index_billing_infos_on_company_id", using: :btree
   end
 
   create_table "categories", force: :cascade do |t|
@@ -53,26 +53,21 @@ ActiveRecord::Schema.define(version: 20170507184448) do
   create_table "claims", force: :cascade do |t|
     t.text     "description"
     t.integer  "order_id"
-    t.integer  "client_id"
+    t.integer  "user_id"
     t.integer  "admin_user_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.index ["admin_user_id"], name: "index_claims_on_admin_user_id", using: :btree
-    t.index ["client_id"], name: "index_claims_on_client_id", using: :btree
     t.index ["order_id"], name: "index_claims_on_order_id", using: :btree
+    t.index ["user_id"], name: "index_claims_on_user_id", using: :btree
   end
 
-  create_table "clients", force: :cascade do |t|
-    t.string   "address"
-    t.string   "email"
-    t.string   "family_name"
+  create_table "companies", force: :cascade do |t|
     t.string   "name"
-    t.string   "phone_number"
-    t.string   "cellphone"
-    t.string   "job_position"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.string   "image"
+    t.string   "address"
+    t.string   "zip_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "discounts", force: :cascade do |t|
@@ -89,10 +84,10 @@ ActiveRecord::Schema.define(version: 20170507184448) do
   create_table "orders", force: :cascade do |t|
     t.integer  "status",        default: 0
     t.date     "delivery_date"
-    t.integer  "client_id"
+    t.integer  "company_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
-    t.index ["client_id"], name: "index_orders_on_client_id", using: :btree
+    t.index ["company_id"], name: "index_orders_on_company_id", using: :btree
   end
 
   create_table "orders_products", id: false, force: :cascade do |t|
@@ -106,13 +101,13 @@ ActiveRecord::Schema.define(version: 20170507184448) do
     t.string   "name"
     t.date     "expires"
     t.date     "valid_since"
-    t.integer  "client_id"
+    t.integer  "company_id"
     t.integer  "admin_user_id"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
     t.integer  "next_price_list_id"
     t.index ["admin_user_id"], name: "index_price_lists_on_admin_user_id", using: :btree
-    t.index ["client_id"], name: "index_price_lists_on_client_id", using: :btree
+    t.index ["company_id"], name: "index_price_lists_on_company_id", using: :btree
     t.index ["next_price_list_id"], name: "index_price_lists_on_next_price_list_id", using: :btree
   end
 
@@ -126,6 +121,20 @@ ActiveRecord::Schema.define(version: 20170507184448) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["code"], name: "index_products_on_code", unique: true, using: :btree
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "email"
+    t.string   "family_name"
+    t.string   "name"
+    t.string   "phone_number"
+    t.string   "cellphone"
+    t.string   "job_position"
+    t.integer  "company_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "image"
+    t.index ["company_id"], name: "index_users_on_company_id", using: :btree
   end
 
   add_foreign_key "price_lists", "price_lists", column: "next_price_list_id"

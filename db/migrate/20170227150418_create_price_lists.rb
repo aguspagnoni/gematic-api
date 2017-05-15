@@ -4,7 +4,7 @@ class CreatePriceLists < ActiveRecord::Migration[5.0]
       t.string    :name
       t.date      :expires
       t.date      :valid_since
-      t.references :client
+      t.references :company
       t.references :admin_user
       t.timestamps
     end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Order, type: :model do
   it { should have_many :products }
-  it { should belong_to :client }
+  it { should belong_to :company }
 
   context 'status' do
     let(:order) { create(:order, status: :not_confirmed) }
@@ -17,14 +17,14 @@ RSpec.describe Order, type: :model do
   end
 
   context 'when calculating totals and subtotal' do
-    let(:client)      { create(:client) }
-    let(:price_list)  { create(:price_list, client: client) }
-    let(:product_1)   { create(:product, gross_price: 100) }
-    let(:product_2)   { create(:product, gross_price: 200) }
-    let(:product_3)   { create(:product, gross_price: 1000) }
+    let(:company)      { create(:company) }
+    let(:price_list)  { create(:price_list, company: company) }
+    let(:product_1)   { create(:product, gross_price: 100, cost: 99) }
+    let(:product_2)   { create(:product, gross_price: 200, cost: 199) }
+    let(:product_3)   { create(:product, gross_price: 1000, cost: 999) }
     let!(:discount_1) { create(:discount, cents: 50, product: product_1, price_list: price_list) }
     let!(:discount_2) { create(:discount, cents: 150, product: product_2, price_list: price_list) }
-    let(:order)       { create(:order, client: price_list.client) }
+    let(:order)       { create(:order, company: price_list.company) }
     let(:products)    { [product_1, product_2] }
 
     before do
@@ -63,19 +63,19 @@ RSpec.describe Order, type: :model do
       end
     end
 
-    context 'when products are inside price list but belong to different client' do
-      let(:client2)               { create(:client) }
-      let(:order)                 { create(:order, client: client2) }
+    context 'when products are inside price list but belong to different company' do
+      let(:company2)               { create(:company) }
+      let(:order)                 { create(:order, company: company2) }
       let(:products)              { [product_1, product_2, product_3] }
       let(:expected_simple_gross) { 1300 } # p1 + p2 + p3
 
-      it 'should not use a price list that doesnt belong to the client making the order' do
+      it 'should not use a price list that doesnt belong to the company making the order' do
         expect(order.gross_total).to eq expected_simple_gross
       end
     end
 
     context 'when there are multiple price_lists that apply for same product' do
-      let(:price_list2)   { create(:price_list, client: client) }
+      let(:price_list2)   { create(:price_list, company: company) }
       let!(:discount_1_1) { create(:discount, cents: 1, product: product_1, price_list: price_list2) }
       let(:products)      { [product_1, product_2] }
       let(:expected_gross_w_discount) { 75 } # (p1 - d1_1) + (p2 - d2)

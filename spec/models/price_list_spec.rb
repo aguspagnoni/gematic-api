@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe PriceList, type: :model do
-  let(:client)              { create(:client) }
+  let(:company)             { create(:company) }
   let(:gross_price)         { 100 }
   let!(:product_w_discount) { create(:product, gross_price: gross_price) }
   let!(:default_product)    { create(:product, gross_price: gross_price) }
-  let!(:price_list)         { create(:price_list, client: client) }
+  let!(:price_list)         { create(:price_list, company: company) }
 
   let!(:discount)           { create(:discount, price_list: price_list, product: product_w_discount) }
   let(:list_details)        { { product: product_w_discount, discount: discount } }
@@ -39,12 +39,12 @@ RSpec.describe PriceList, type: :model do
     let(:invalid_msg)      { I18n.t 'errors.messages.expires_validation' }
 
     it 'allows greater than valid_since dates for expire' do
-      price_list = create(:price_list_with_client, valid_since: valid_since, expires: valid_expires)
+      price_list = create(:price_list_with_company, valid_since: valid_since, expires: valid_expires)
       expect(price_list).to be_valid
     end
 
     it 'doesnt allow invalid dates' do
-      invalid = build(:price_list_with_client, valid_since: valid_since, expires: invalid_expires)
+      invalid = build(:price_list_with_company, valid_since: valid_since, expires: invalid_expires)
       expect(invalid.valid?).to be false
       expect(invalid.errors.messages[:expires].first).to eq invalid_msg
     end

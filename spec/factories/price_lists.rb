@@ -16,7 +16,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :price_list_with_client, parent: :price_list do
-    client
+  factory :price_list_with_company, parent: :price_list do
+    company
   end
 end

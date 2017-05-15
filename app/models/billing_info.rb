@@ -1,3 +1,3 @@
 class BillingInfo < ApplicationRecord
-  belongs_to :clients
+  belongs_to :company
 end

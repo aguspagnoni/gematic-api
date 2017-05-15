@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :discounts
   resources :price_lists
   resources :billing_infos
-  resources :clients
+  resources :users
   resources :categories
   resources :claims
   resources :orders
