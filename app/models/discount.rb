@@ -3,6 +3,7 @@ class Discount < ApplicationRecord
   belongs_to :price_list
   delegate :client, to: :price_list
   validates_numericality_of :cents
+  validate :human_error_over_product
 
   def self.empty_discount
     OpenStruct.new(cents: 0)
@@ -14,5 +15,9 @@ class Discount < ApplicationRecord
                .order('updated_at desc')
                .limit(1)
     discount.empty? ? empty_discount : discount.first
+  end
+
+  def human_error_over_product
+    errors.add(:cents, :discount_cents_greater_product_cost) if cents > product.cost
   end
 end
