@@ -2,7 +2,7 @@ class Discount < ApplicationRecord
   belongs_to :product
   belongs_to :price_list
   delegate :company, to: :price_list
-  validates_numericality_of :cents
+  validates :cents, numericality: true
   validate :human_error_over_product
 
   def self.empty_discount
