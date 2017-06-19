@@ -8,6 +8,12 @@ es:
   activerecord:
     errors:
       models:
+        user:
+          attributes:
+            password:
+              blank: La contraseña no puede estar vacia
+            company:
+              required: Es necesario una compañia para obtener un usuario
         product:
           attributes:
             cost:

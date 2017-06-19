@@ -6,7 +6,6 @@ class PriceList < ApplicationRecord
                                foreign_key: 'next_price_list_id',
                                optional: true
 
-
   validates :name, :expires, :valid_since, presence: true
   validate  :non_recursive, on: :update
   validate  :expires_after_valid_date

@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :user do
-    email "MyString"
-    family_name "MyString"
-    name "MyString"
+    email        { Faker::Internet.email }
+    family_name  { Faker::Name.last_name }
+    name         { Faker::Name.first_name }
     phone_number "MyString"
-    cellphone "MyString"
+    cellphone    "MyString"
+    password     { Faker::Internet.password(8) }
     company
   end
 end

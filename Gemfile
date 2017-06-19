@@ -5,8 +5,11 @@ gem 'rails', '~> 5.0.0'
 gem 'pg'
 gem 'puma', '~> 3.0'
 gem 'redis', '~> 3.0'
+
+# Token based authentication
+gem 'knock'
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'bcrypt', '~> 3.1.7'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'

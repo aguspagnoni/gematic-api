@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  if Rails.env.development?
-    mount Localtower::Engine, at: "localtower"
-  end
+  mount Localtower::Engine, at: 'localtower' if Rails.env.development?
+
+  post 'user_token' => 'user_token#create'
   resources :admin_users
   resources :discounts
   resources :price_lists
