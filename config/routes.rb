@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :branch_offices
   mount Localtower::Engine, at: 'localtower' if Rails.env.development?
 
   post 'user_token' => 'user_token#create'

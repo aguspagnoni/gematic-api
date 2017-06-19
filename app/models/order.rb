@@ -2,6 +2,8 @@ class Order < ApplicationRecord
   has_many    :order_items
   has_many    :products, through: :order_items
   belongs_to  :company
+  belongs_to  :branch_office
+  belongs_to  :billing_info
   STATUSES = [:not_confirmed, :confirmed, :with_invoice].freeze # defaults to 0 -> :not_confirmed
   enum status: STATUSES
 

@@ -4,5 +4,6 @@ FactoryGirl.define do
     cuit "MyString"
     condition "MyString"
     razon_social "MyString"
+    company
   end
 end

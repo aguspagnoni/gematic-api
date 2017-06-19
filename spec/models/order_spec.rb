@@ -2,10 +2,16 @@ require 'rails_helper'
 
 RSpec.describe Order, type: :model do
   it { should have_many :products }
-  it { should belong_to :company }
+  it { should belong_to :branch_office }
+  it { should belong_to :billing_info }
+
+  let(:company)     { create(:company) }
+  let(:office)      { create(:branch_office, company: company) }
+  let(:billing)     { create(:billing_info, company: company) }
 
   context 'status' do
-    let(:order) { create(:order, status: :not_confirmed) }
+    let(:order) { create(:order, status: :not_confirmed, company: company,
+                                 branch_office: office, billing_info: billing) }
 
     it 'does not allow any status as valid' do
       expect { build(:order, status: 999) }.to raise_error(ArgumentError)
@@ -17,14 +23,14 @@ RSpec.describe Order, type: :model do
   end
 
   context 'when calculating totals and subtotal' do
-    let(:company)     { create(:company) }
     let(:price_list)  { create(:price_list, company: company) }
     let(:product_1)   { create(:product, gross_price: 100, cost: 99) }
     let(:product_2)   { create(:product, gross_price: 200, cost: 199) }
     let(:product_3)   { create(:product, gross_price: 1000, cost: 999) }
     let!(:discount_1) { create(:discount, cents: 50, product: product_1, price_list: price_list) }
     let!(:discount_2) { create(:discount, cents: 150, product: product_2, price_list: price_list) }
-    let(:order)       { create(:order, company: price_list.company) }
+    let(:order)       { create(:order, company: price_list.company, branch_office: office,
+                                       billing_info: billing) }
     let(:products)    { [product_1, product_2] }
 
     before do
@@ -65,7 +71,10 @@ RSpec.describe Order, type: :model do
 
     context 'when products are inside price list but belong to different company' do
       let(:company2)              { create(:company) }
-      let(:order)                 { create(:order, company: company2) }
+      let(:office2)               { create(:branch_office, company: company2) }
+      let(:billing2)              { create(:billing_info, company: company2) }
+      let(:order)                 { create(:order, company: company2, branch_office: office2,
+                                                   billing_info: billing2) }
       let(:products)              { [product_1, product_2, product_3] }
       let(:expected_simple_gross) { 1300 } # p1 + p2 + p3
 
