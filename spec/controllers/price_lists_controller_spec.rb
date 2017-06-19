@@ -19,8 +19,7 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe PriceListsController, type: :controller do
-
-  let(:company)  { create(:company) }
+  let(:company) { create(:company) }
   # This should return the minimal set of attributes required to create a valid
   # PriceList. As you add validations to PriceList, be sure to
   # adjust the attributes here as well.
@@ -69,7 +68,7 @@ RSpec.describe PriceListsController, type: :controller do
 
       it "redirects to the created price_list" do
         post :create, params: { price_list: valid_attributes }, session: valid_session
-        expect(response.body).to match (PriceList.last.to_json)
+        expect(response.body).to match(PriceList.last.to_json)
       end
     end
 

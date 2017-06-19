@@ -13,8 +13,8 @@ class PriceList < ApplicationRecord
   PERMITED_PARAMS = column_names - %w(id created_at updated_at next_price_list_id)
 
   before_update do
-    if !@called_from_inside
-      raise ActiveRecord::RecordNotSaved.new('Use business logic `update_new_copy` instead')
+    unless @called_from_inside
+      raise(ActiveRecord::RecordNotSaved, 'Use business logic `update_new_copy` instead')
     end
   end
 
@@ -23,7 +23,7 @@ class PriceList < ApplicationRecord
   end
 
   def update_new_copy(params)
-    price_list_copy = self.dup
+    price_list_copy = dup
     params.each { |k, v| price_list_copy.send("#{k}=", v) }
     @called_from_inside = true
     price_list_copy.save

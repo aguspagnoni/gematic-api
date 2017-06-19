@@ -17,7 +17,7 @@ RSpec.describe Order, type: :model do
   end
 
   context 'when calculating totals and subtotal' do
-    let(:company)      { create(:company) }
+    let(:company)     { create(:company) }
     let(:price_list)  { create(:price_list, company: company) }
     let(:product_1)   { create(:product, gross_price: 100, cost: 99) }
     let(:product_2)   { create(:product, gross_price: 200, cost: 199) }
@@ -64,7 +64,7 @@ RSpec.describe Order, type: :model do
     end
 
     context 'when products are inside price list but belong to different company' do
-      let(:company2)               { create(:company) }
+      let(:company2)              { create(:company) }
       let(:order)                 { create(:order, company: company2) }
       let(:products)              { [product_1, product_2, product_3] }
       let(:expected_simple_gross) { 1300 } # p1 + p2 + p3

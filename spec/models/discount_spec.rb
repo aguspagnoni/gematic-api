@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Discount, type: :model do
-  let!(:company)      { create(:company) }
+  let!(:company) { create(:company) }
 
   describe '#for_company_and_product' do
-    let!(:company2)     { create(:company) }
+    let!(:company2)    { create(:company) }
     let!(:price_list)  { create(:price_list_with_products, company: company) }
     let!(:price_list2) { create(:price_list_with_products, company: company2) }
     let(:product)      { price_list.products.first }
