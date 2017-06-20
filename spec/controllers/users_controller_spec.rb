@@ -46,23 +46,45 @@ RSpec.describe UsersController, type: :controller do
     let!(:user)  { User.create! valid_attributes }
     let!(:admin) { AdminUser.create! valid_admin_attributes }
 
-    before do
-      add_authentication_header_for(admin)
-    end
+    context 'normal flow' do
+      before do
+        add_authentication_header_for(admin)
+      end
 
-    describe "GET #index" do
-      it "assigns all users as @users" do
-        get :index, params: {}
-        expect(response).to have_http_status :ok
-        expect(assigns(:users)).to eq([user])
+      describe "GET #index" do
+        it "assigns all users as @users" do
+          get :index, params: {}
+          expect(response).to have_http_status :ok
+          expect(assigns(:users)).to eq([user])
+        end
+      end
+
+      describe "DELETE #destroy" do
+        it "destroys the requested user" do
+          expect {
+            delete :destroy, params: { id: user.to_param }
+          }.to change(User, :count).by(-1)
+        end
       end
     end
 
-    describe "DELETE #destroy" do
-      it "destroys the requested user" do
-        expect {
+    context 'users tries to enter admin sections' do
+      before do
+        add_authentication_header_for(user)
+      end
+
+      describe "GET #index" do
+        it 'stops action' do
+          get :index, params: {}
+          expect(response).to have_http_status :unauthorized
+        end
+      end
+
+      describe "DELETE #destroy" do
+        it "stops action" do
           delete :destroy, params: { id: user.to_param }
-        }.to change(User, :count).by(-1)
+          expect(response).to have_http_status :unauthorized
+        end
       end
     end
   end

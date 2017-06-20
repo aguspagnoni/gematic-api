@@ -1,4 +1,7 @@
 class ProductsController < ApplicationController
+  ADMIN_AUTHENTICATED = [:create, :update, :destroy]
+  before_action :authenticate_admin_user, only: ADMIN_AUTHENTICATED
+  before_action :authenticate_user, except: ADMIN_AUTHENTICATED
   before_action :set_product, only: [:show, :update, :destroy]
 
   # GET /products
