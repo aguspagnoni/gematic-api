@@ -27,6 +27,10 @@ RSpec.describe UsersController, type: :controller do
     { email: user_example.email, password: user_example.password, company_id: user_example.company.id }
   end
 
+  let(:valid_admin_attributes) do
+    { email: 'asd@a.com', password: 'mama' }
+  end
+
   let(:invalid_attributes) do
     { email: 'not_an_email' }
   end
@@ -40,8 +44,12 @@ RSpec.describe UsersController, type: :controller do
 
   describe "GET #index" do
     it "assigns all users as @users" do
+      User.destroy_all
+      AdminUser.destroy_all
       user = User.create! valid_attributes
-      skip('needs admin logic!')
+      admin = AdminUser.create! valid_admin_attributes
+      add_authentication_header_for(admin)
+      byebug
       get :index, params: {}
       expect(assigns(:users)).to eq([user])
     end
