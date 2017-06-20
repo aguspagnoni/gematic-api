@@ -22,6 +22,9 @@ gem 'mini_magick'
 # Error handling
 gem 'rollbar'
 
+# Background processing
+gem 'sidekiq'
+
 group :development, :test do
   gem 'database_cleaner'
   gem 'byebug', platform: :mri
