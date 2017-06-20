@@ -23,6 +23,7 @@ gem 'mini_magick'
 gem 'rollbar'
 
 group :development, :test do
+  gem 'database_cleaner'
   gem 'byebug', platform: :mri
   gem 'rspec-rails', '>= 3.5.0'
   gem 'factory_girl_rails'
