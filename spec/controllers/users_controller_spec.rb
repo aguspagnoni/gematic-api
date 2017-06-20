@@ -68,6 +68,46 @@ RSpec.describe UsersController, type: :controller do
   end
 
   describe 'PUBLIC ENDPOINTS' do
+    describe "POST #confirm" do
+      let(:user) { User.create! valid_attributes }
+      let(:token) { 'token' }
+      before do
+        allow_any_instance_of(UsersController).to receive(:token_for).and_return(token)
+      end
+
+      it 'is publicly reachable' do
+        post :confirm
+        expect(response).to have_http_status :bad_request
+      end
+
+      context "with valid params" do
+        it "confirms user given" do
+          post :confirm, params: { user: { email: user.email, token: token } }
+          expect {
+            user.reload
+          }.to change(user, :status).from('not_confirmed').to('confirmed')
+        end
+      end
+
+      context "with valid params" do
+        let(:invalid_token) { 'invalid_token' }
+        before do
+          post :confirm, params: { user: { email: user.email, token: invalid_token } }
+        end
+
+        it 'does not give away information about the user' do
+          expect(response).to have_http_status :not_found
+        end
+
+        it "does not confirm user" do
+          expect {
+            user.reload
+          }.not_to change(user, :status)
+        end
+      end
+    end
+
+
     describe "POST #create" do
       context "with valid params" do
         it "creates a new user" do
@@ -87,7 +127,7 @@ RSpec.describe UsersController, type: :controller do
         it "redirects to a confirmation link" do
           expect {
             post :create, params: { user: valid_attributes }
-          }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
+          }.to have_enqueued_job(ActionMailer::DeliveryJob)
         end
       end
 

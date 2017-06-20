@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
+  include Registration
   ADMIN_AUTHENTICATED = [:index, :destroy]
-  UNAUTHENTICATED     = [:create]
+  UNAUTHENTICATED     = [:create, :confirm]
   before_action :authenticate_admin_user, only: ADMIN_AUTHENTICATED
   before_action :authenticate_user, except: UNAUTHENTICATED + ADMIN_AUTHENTICATED
   before_action :set_user, only: [:show, :update, :destroy]
@@ -20,12 +21,22 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-    byebug
     if @user.save
-      send_confirmation_mail(user)
+      send_confirmation_mail(@user)
       render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /confirm
+  def confirm
+    @user = user_from(user_params[:email], user_params[:token])
+    if @user
+      @user.confirmed!
+      render 'Welcome!'
+    else
+      head :not_found
     end
   end
 
@@ -53,6 +64,6 @@ class UsersController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def user_params
     params.require(:user).permit(:address, :email, :family_name, :name, :phone_number, :cellphone,
-                                 :password, :company_id)
+                                 :password, :company_id, :token)
   end
 end

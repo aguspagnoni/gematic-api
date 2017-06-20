@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   resources :discounts
   resources :price_lists
   resources :billing_infos
-  resources :users
+  resources :users do
+    post :confirm, on: :collection
+  end
   resources :categories
   resources :claims
   resources :orders
