@@ -25,6 +25,8 @@ gem 'rollbar'
 # Background processing
 gem 'sidekiq'
 
+gem 'app_configuration'
+
 group :development, :test do
   gem 'database_cleaner'
   gem 'byebug', platform: :mri
