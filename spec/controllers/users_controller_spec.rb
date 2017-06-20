@@ -42,76 +42,73 @@ RSpec.describe UsersController, type: :controller do
   let(:no_session) { {} }
   let(:valid_admin_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all users as @users" do
-      User.destroy_all
-      AdminUser.destroy_all
-      user = User.create! valid_attributes
-      admin = AdminUser.create! valid_admin_attributes
+  describe 'WHEN **ADMIN** NEEDS AUTHENTICATION' do
+    let!(:user)  { User.create! valid_attributes }
+    let!(:admin) { AdminUser.create! valid_admin_attributes }
+
+    before do
       add_authentication_header_for(admin)
-      byebug
-      get :index, params: {}
-      expect(assigns(:users)).to eq([user])
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested user" do
-      user = User.create! valid_attributes
-      skip('needs admin logic!')
-      expect {
-        delete :destroy, params: { id: user.to_param }
-      }.to change(user, :count).by(-1)
     end
 
-    it "redirects to the users list" do
-      user = User.create! valid_attributes
-      skip('needs admin logic!')
-      delete :destroy, params: { id: user.to_param }
-      expect(response).to redirect_to(users_url)
+    describe "GET #index" do
+      it "assigns all users as @users" do
+        get :index, params: {}
+        expect(response).to have_http_status :ok
+        expect(assigns(:users)).to eq([user])
+      end
     end
-  end
 
-  describe "POST #create" do
-    context "with valid params" do
-      it "creates a new user" do
-        skip('think this case with confirmation link')
+    describe "DELETE #destroy" do
+      it "destroys the requested user" do
         expect {
-          post :create, params: { user: valid_attributes }
-        }.to change(User, :count).by(1)
-        # FIXME: skip('add email confirmation logic..')
-      end
-
-      it "assigns a newly created user as @user" do
-        # FIXME: skip('think this case with confirmation link')
-        skip('think this case with confirmation link')
-        post :create, params: { user: valid_attributes }
-        expect(assigns(:user)).to be_a(User)
-        expect(assigns(:user)).to be_persisted
-      end
-
-      it "redirects to a confirmation link" do
-        # FIXME: expect email to have been sent
-        skip('think this case with confirmation link')
-        post :create, params: { user: valid_attributes }
-        expect(response).to have_http_status :created
-        expect(json_response['id']).to eq(User.last.id)
-      end
-    end
-
-    context "with invalid params" do
-      skip('think this case with confirmation link')
-      it "specifies invalid attributes errors" do
-        post :create, params: { user: invalid_attributes }
-        expect(json_response.keys).to match invalid_attributes_errors
+          delete :destroy, params: { id: user.to_param }
+        }.to change(User, :count).by(-1)
       end
     end
   end
 
-  describe 'user authenticated' do
+  describe 'PUBLIC ENDPOINTS' do
+    describe "POST #create" do
+      context "with valid params" do
+        it "creates a new user" do
+          skip('think this case with confirmation link')
+          expect {
+            post :create, params: { user: valid_attributes }
+          }.to change(User, :count).by(1)
+          # FIXME: skip('add email confirmation logic..')
+        end
+
+        it "assigns a newly created user as @user" do
+          # FIXME: skip('think this case with confirmation link')
+          skip('think this case with confirmation link')
+          post :create, params: { user: valid_attributes }
+          expect(assigns(:user)).to be_a(User)
+          expect(assigns(:user)).to be_persisted
+        end
+
+        it "redirects to a confirmation link" do
+          # FIXME: expect email to have been sent
+          skip('think this case with confirmation link')
+          post :create, params: { user: valid_attributes }
+          expect(response).to have_http_status :created
+          expect(json_response['id']).to eq(User.last.id)
+        end
+      end
+
+      context "with invalid params" do
+        skip('think this case with confirmation link')
+        it "specifies invalid attributes errors" do
+          post :create, params: { user: invalid_attributes }
+          expect(json_response.keys).to match invalid_attributes_errors
+        end
+      end
+    end
+  end
+
+  describe 'WHEN **USER** NEEDS AUTHENTICATION' do
     let(:user) { User.create! valid_attributes }
     before do
-      add_authentication_header_for(user.id)
+      add_authentication_header_for(user)
     end
 
     describe "PUT #update" do

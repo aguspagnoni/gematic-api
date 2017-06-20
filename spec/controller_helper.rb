@@ -3,8 +3,8 @@ module ControllerHelper
     request.headers.merge! authenticated_header(id)
   end
 
-  def authenticated_header(id)
-    token = Knock::AuthToken.new(payload: { sub: id }).token
+  def authenticated_header(entity)
+    token = Knock::AuthToken.new(payload: entity.to_token_payload).token
 
     {
       'Authorization': "Bearer #{token}"
