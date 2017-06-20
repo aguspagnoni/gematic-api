@@ -20,8 +20,9 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
-
+    byebug
     if @user.save
+      send_confirmation_mail(user)
       render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity

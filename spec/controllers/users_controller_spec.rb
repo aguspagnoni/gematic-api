@@ -71,32 +71,27 @@ RSpec.describe UsersController, type: :controller do
     describe "POST #create" do
       context "with valid params" do
         it "creates a new user" do
-          skip('think this case with confirmation link')
           expect {
             post :create, params: { user: valid_attributes }
           }.to change(User, :count).by(1)
-          # FIXME: skip('add email confirmation logic..')
         end
 
         it "assigns a newly created user as @user" do
-          # FIXME: skip('think this case with confirmation link')
-          skip('think this case with confirmation link')
           post :create, params: { user: valid_attributes }
           expect(assigns(:user)).to be_a(User)
           expect(assigns(:user)).to be_persisted
+          expect(assigns(:user).confirmed?).to be false
+          expect(response).to have_http_status :created
         end
 
         it "redirects to a confirmation link" do
-          # FIXME: expect email to have been sent
-          skip('think this case with confirmation link')
-          post :create, params: { user: valid_attributes }
-          expect(response).to have_http_status :created
-          expect(json_response['id']).to eq(User.last.id)
+          expect {
+            post :create, params: { user: valid_attributes }
+          }.to change(ActionMailer::Base.deliveries, :count).from(0).to(1)
         end
       end
 
       context "with invalid params" do
-        skip('think this case with confirmation link')
         it "specifies invalid attributes errors" do
           post :create, params: { user: invalid_attributes }
           expect(json_response.keys).to match invalid_attributes_errors
