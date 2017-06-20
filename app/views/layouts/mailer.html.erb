@@ -8,6 +8,8 @@
   </head>
 
   <body>
-    <%= yield %>
+    <p>Estimado <%= @user.email %></p><br/>
+    <p>Para confirmar su cuenta en Gematic por favor haga click en el siguiente link:</p>
+    <a href="<%= @confirm_link %>"><%= @confirm_link %></a>
   </body>
 </html>

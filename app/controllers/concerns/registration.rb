@@ -5,10 +5,10 @@ module Registration
     private
 
     def send_confirmation_mail(user)
-      ConfirmationMailer.deliver_later(confirmation_link(user))
+      UserMailer.confirmation_email(user, confirm_link(user)).deliver_later
     end
 
-    def confirmation_link(user)
+    def confirm_link(user)
       [Rails.application.secrets.app_name, 'users', 'confirm'].join('/') +
       '?' +
       "email=#{user.email}&token=#{token_for(user)}"

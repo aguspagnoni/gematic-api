@@ -1,4 +1,7 @@
 es:
+  mailers:
+    confirmation_email:
+      subject: 'Confirmar Cuenta'
   errors:
     messages:
       record_invalid: el objeto es invalido
