@@ -25,6 +25,10 @@ gem 'rollbar'
 # Background processing
 gem 'sidekiq'
 
+# Pagination
+gem 'kaminari'
+
+# MISC
 gem 'app_configuration'
 
 group :development, :test do
