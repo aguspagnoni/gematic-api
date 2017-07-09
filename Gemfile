@@ -28,6 +28,9 @@ gem 'sidekiq'
 # Pagination
 gem 'kaminari'
 
+# Admin
+gem 'forest_liana'
+
 # MISC
 gem 'app_configuration'
 

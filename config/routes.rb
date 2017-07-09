@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  mount ForestLiana::Engine => '/forest'
   resources :branch_offices
   mount Localtower::Engine, at: 'localtower' if Rails.env.development?
   mount Sidekiq::Web => '/sidekiq'
