@@ -46,6 +46,7 @@ class PriceListsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_price_list
+    byebug
     @price_list = PriceList.find(params[:id])
   end
 

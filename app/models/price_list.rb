@@ -2,6 +2,8 @@ class PriceList < ApplicationRecord
   has_many   :discounts
   has_many   :products, through: :discounts
   belongs_to :company
+  belongs_to :admin_user
+  belongs_to :authorizer, class_name: 'AdminUser', foreign_key: 'authorizer_id', optional: true
   belongs_to :next_price_list, class_name: 'PriceList',
                                foreign_key: 'next_price_list_id',
                                optional: true
@@ -27,8 +29,16 @@ class PriceList < ApplicationRecord
     params.each { |k, v| price_list_copy.send("#{k}=", v) }
     @called_from_inside = true
     price_list_copy.save
-    update(next_price_list: price_list_copy)
+    update(next_price_list: price_list_copy, active: false)
     price_list_copy
+  end
+
+  def authorize!(authorizer)
+    @called_from_inside = true
+    errors.add(:authorizer, :same_authorizer_validation) if admin_user == authorizer
+    errors.add(:authorizer, :privilege_validation) if !authorizer.is_a?(AdminUser) || authorizer.back_office?
+    raise ActiveRecord::RecordNotSaved if errors.present?
+    update!(authorized_at: Time.zone.now, authorizer: authorizer)
   end
 
   private

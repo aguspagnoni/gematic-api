@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620185450) do
+ActiveRecord::Schema.define(version: 20170805223204) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,10 +117,14 @@ ActiveRecord::Schema.define(version: 20170620185450) do
     t.date     "valid_since"
     t.integer  "company_id"
     t.integer  "admin_user_id"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "next_price_list_id"
+    t.boolean  "active",             default: true
+    t.datetime "authorized_at"
+    t.integer  "authorizer_id"
     t.index ["admin_user_id"], name: "index_price_lists_on_admin_user_id", using: :btree
+    t.index ["authorizer_id"], name: "index_price_lists_on_authorizer_id", using: :btree
     t.index ["company_id"], name: "index_price_lists_on_company_id", using: :btree
     t.index ["next_price_list_id"], name: "index_price_lists_on_next_price_list_id", using: :btree
   end
@@ -153,5 +157,6 @@ ActiveRecord::Schema.define(version: 20170620185450) do
     t.index ["company_id"], name: "index_users_on_company_id", using: :btree
   end
 
+  add_foreign_key "price_lists", "admin_users", column: "authorizer_id"
   add_foreign_key "price_lists", "price_lists", column: "next_price_list_id"
 end

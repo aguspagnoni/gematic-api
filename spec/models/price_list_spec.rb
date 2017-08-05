@@ -32,6 +32,25 @@ RSpec.describe PriceList, type: :model do
     end
   end
 
+  describe 'authorizing a PriceList' do
+    let(:authorizer)      { create(:admin_user, privilege: :supervisor) }
+    let(:bad_authorizer)  { create(:admin_user, privilege: :back_office) }
+
+    it 'fails if authorizer is the same person as the one who created it' do
+      expect { price_list.authorize!(price_list.admin_user) }.to raise_error(ActiveRecord::RecordNotSaved)
+    end
+
+    it 'fails if authorizer does not have the correct privilege' do
+      expect { price_list.authorize!(bad_authorizer) }.to raise_error(ActiveRecord::RecordNotSaved)
+    end
+
+    it 'saves the time of authorization if authorizer is someone else' do
+      expect { price_list.authorize!(authorizer) }
+        .to change(price_list, :authorized_at)
+        .and change(price_list, :authorizer).to(authorizer)
+    end
+  end
+
   describe 'validity dates' do
     let(:valid_since)      { Date.new(2017, 1, 1) }
     let(:valid_expires)    { valid_since + 1.day }
