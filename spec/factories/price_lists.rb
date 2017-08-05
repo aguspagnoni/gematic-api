@@ -3,6 +3,7 @@ FactoryGirl.define do
     name        { Faker::Lorem.sentence(3) }
     valid_since { Date.today }
     expires     { Date.today + 1.day }
+    admin_user
   end
 
   factory :price_list_with_products, parent: :price_list do

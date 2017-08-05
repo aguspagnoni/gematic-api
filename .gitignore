@@ -21,5 +21,7 @@
 .byebug_history
 
 # Ignore Rspec's results file
-spec/examples.txt 
+spec/examples.txt
 .DS_Store
+
+public/uploads/*
