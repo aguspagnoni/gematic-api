@@ -8,6 +8,8 @@ class PriceList < ApplicationRecord
   validates :name, :expires, :valid_since, presence: true
   validate  :expires_after_valid_date
 
+  has_paper_trail
+
   PERMITED_PARAMS = column_names - %w(id created_at updated_at next_price_list_id)
 
   def details

@@ -2,14 +2,12 @@ if ForestLiana::UserSpace.const_defined?('PriceListController')
   ForestLiana::UserSpace::PriceListController.class_eval do
     def update
       set_price_list
-      old_price_list = @price_list
-      @price_list = @price_list.update_new_copy(price_list_params)
+      PaperTrail.whodunnit = forest_user["data"]["data"]["email"]
+      @price_list.update(price_list_params)
       if @price_list.valid?
         render json: @price_list
       else
-        error_message = old_price_list.errors.messages.merge(@price_list.errors.messages)
-        @price_list = old_price_list
-        render json: error_message, status: :unprocessable_entity
+        render json: @price_list.errors.messages, status: :unprocessable_entity
       end
     end
 

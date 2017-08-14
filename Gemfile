@@ -33,6 +33,7 @@ gem 'forest_liana'
 
 # MISC
 gem 'app_configuration'
+gem 'paper_trail'
 
 group :development, :test do
   gem 'database_cleaner'

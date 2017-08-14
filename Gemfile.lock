@@ -150,6 +150,9 @@ GEM
     nio4r (1.2.1)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
+    paper_trail (7.1.0)
+      activerecord (>= 4.0, < 5.2)
+      request_store (~> 1.1)
     parser (2.4.0.0)
       ast (~> 2.2)
     pg (0.19.0)
@@ -200,6 +203,7 @@ GEM
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
     redis (3.3.3)
+    request_store (1.3.2)
     rollbar (2.14.1)
       multi_json
     rspec-core (3.5.4)
@@ -283,6 +287,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   localtower
   mini_magick
+  paper_trail
   pg
   puma (~> 3.0)
   rails (~> 5.0.0)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170813193325) do
+ActiveRecord::Schema.define(version: 20170814045220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,11 @@ ActiveRecord::Schema.define(version: 20170813193325) do
     t.integer  "company_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "province"
+    t.string   "localidad"
+    t.string   "phone"
+    t.string   "zipcode"
+    t.string   "other_info"
     t.index ["company_id"], name: "index_billing_infos_on_company_id", using: :btree
   end
 
@@ -45,6 +50,7 @@ ActiveRecord::Schema.define(version: 20170813193325) do
     t.string   "geolocation"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "phone"
     t.index ["company_id"], name: "index_branch_offices_on_company_id", using: :btree
   end
 
@@ -130,8 +136,8 @@ ActiveRecord::Schema.define(version: 20170813193325) do
     t.string   "name"
     t.string   "image"
     t.string   "code"
-    t.integer  "gross_price"
-    t.integer  "cost"
+    t.float    "gross_price"
+    t.float    "cost"
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
@@ -152,6 +158,16 @@ ActiveRecord::Schema.define(version: 20170813193325) do
     t.string   "password_digest"
     t.integer  "status",          default: 0
     t.index ["company_id"], name: "index_users_on_company_id", using: :btree
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string   "item_type",  null: false
+    t.integer  "item_id",    null: false
+    t.string   "event",      null: false
+    t.string   "whodunnit"
+    t.text     "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
   add_foreign_key "price_lists", "admin_users", column: "authorizer_id"

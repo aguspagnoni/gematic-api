@@ -5,6 +5,8 @@ class Discount < ApplicationRecord
   validates :cents, numericality: true
   validate :human_error_over_product
 
+  has_paper_trail
+
   def self.empty_discount
     OpenStruct.new(cents: 0)
   end
