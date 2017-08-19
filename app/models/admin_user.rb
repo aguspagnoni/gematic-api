@@ -6,5 +6,10 @@ class AdminUser < ApplicationRecord
   STATUSES = [:back_office, :supervisor, :superadmin].freeze # defaults to 0 -> :back_office
   enum privilege: STATUSES
 
+  before_save do
+    self.password              = 'currently_not_used'
+    self.password_confirmation = 'currently_not_used'
+  end
+
   has_secure_password
 end

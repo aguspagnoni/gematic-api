@@ -18,20 +18,8 @@ if ForestLiana::UserSpace.const_defined?('ProductController')
     end
 
     def supervisor?(whodunnit)
-      AdminUser.find_by(email: whodunnit)&.supervisor?
+      user = AdminUser.find_by(email: whodunnit)
+      user&.supervisor? || user&.superadmin?
     end
-
-    def set_product
-      @product = Product.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    # def product_params
-    #   permitted = params.fetch(:data, {})[:attributes].permit(PriceList::PERMITED_PARAMS)
-    #   relationships = params.fetch(:data).fetch(:relationships)
-    #   permitted[:admin_user_id] = relationships[:admin_user][:data][:id]
-    #   permitted[:company_id] = relationships[:company][:data][:id]
-    #   permitted
-    # end
   end
 end
