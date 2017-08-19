@@ -11,6 +11,14 @@ es:
   activerecord:
     errors:
       models:
+        admin_user:
+          attributes:
+            email:
+              taken: Ese email ya existe
+        price_list:
+          attributes:
+            name:
+              blank: 'Falta poner nombre a la lista de precios'
         user:
           attributes:
             password:
@@ -21,3 +29,5 @@ es:
           attributes:
             cost:
               less_than: el costo nunca puede ser mayor al precio normal
+
+

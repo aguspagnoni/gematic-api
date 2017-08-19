@@ -93,9 +93,9 @@ cats = [
 {:cat=>"Cafes", :subs=>["Tostado", "Elaboracion Propia", "Grano Crudo", "Vending"]}]
 
 cats.each do |h|
-  cat = Category.find_by(name: h[:cat])
+  cat = Category.find_by(name: h[:cat].downcase)
   h[:subs].each do |h2|
-    Category.create(name: h2, supercategory: cat)
+    Category.create(name: h2, category_id: cat.id)
   end
 end
 

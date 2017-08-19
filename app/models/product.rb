@@ -8,4 +8,6 @@ class Product < ApplicationRecord
   validates_numericality_of :cost, greater_or_equal_than: 0, less_than: :gross_price
 
   mount_uploader :image, PictureUploader
+
+  has_paper_trail
 end
