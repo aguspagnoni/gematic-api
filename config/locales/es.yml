@@ -11,6 +11,10 @@ es:
   activerecord:
     errors:
       models:
+        order_item:
+          attributes:
+            quantity:
+              greater_than_or_equal_to: 'La cantidad debe ser positiva'
         admin_user:
           attributes:
             email:
@@ -29,5 +33,3 @@ es:
           attributes:
             cost:
               less_than: el costo nunca puede ser mayor al precio normal
-
-

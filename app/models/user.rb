@@ -4,7 +4,7 @@ class User < ApplicationRecord
   belongs_to :company
   mount_uploader :image, PictureUploader
   validates :email, presence: true, email: true
-  enum status: [:not_confirmed, :confirmed]
+  enum status: [:not_confirmed, :confirmed, :discontinued]
 
   has_secure_password
 end
