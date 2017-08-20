@@ -27,7 +27,7 @@ class PriceListsController < ApplicationController
   # PATCH/PUT /price_lists/1
   def update
     old_price_list = @price_list
-    @price_list = @price_list.update_new_copy(price_list_params)
+    @price_list.update(price_list_params)
     if @price_list.valid?
       render json: @price_list
     else
@@ -46,7 +46,6 @@ class PriceListsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_price_list
-    byebug
     @price_list = PriceList.find(params[:id])
   end
 

@@ -15,6 +15,7 @@ RSpec.describe AdminUser, type: :model do
     end
 
     it 'responds with user when #authenticate is ok' do
+      skip 'until admins do have a password other than Forest Admins one'
       expect(subject.authenticate(password)).to eq subject
     end
 

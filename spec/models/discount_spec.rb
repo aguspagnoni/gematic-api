@@ -9,7 +9,7 @@ RSpec.describe Discount, type: :model do
     let!(:price_list2) { create(:price_list_with_products, company: company2) }
     let(:product)      { price_list.products.first }
 
-    it 'select correct discount' do
+    it 'selects those discounts that belong to the company and not others' do
       discount = Discount.for_company_and_product(company, product)
       expect(discount.product).to eq product
       expect(discount.company).to eq company

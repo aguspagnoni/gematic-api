@@ -4,7 +4,7 @@ RSpec.describe Product, type: :model do
   it { should have_and_belong_to_many :categories }
   it { should have_many :orders }
   it { should have_many :order_items }
-  it { should validate_numericality_of(:gross_price).is_greater_than 1 }
+  it { should validate_numericality_of(:gross_price).is_greater_than 0 }
 
   let(:less_than_msg) { I18n.t 'activerecord.errors.models.product.attributes.cost.less_than' }
 
