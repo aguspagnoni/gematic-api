@@ -9,6 +9,34 @@ RSpec.describe Order, type: :model do
   let(:office)      { create(:branch_office, company: company) }
   let(:billing)     { create(:billing_info, company: company) }
 
+  context 'branch_office.company != order.company' do
+    let(:company2)     { create(:company) }
+    let(:office2)      { create(:branch_office, company: company2) }
+    let(:build_order) do
+      build(:order, company: company, branch_office: office2, billing_info: billing)
+    end
+
+    it 'should raise error if branch office doesnt belong to the company selected' do
+      invalid = build_order
+      expect(invalid.valid?).to be false
+      expect(invalid.errors.messages[:branch_office]).not_to be_empty
+    end
+  end
+
+  context 'billing_info.company != order.company' do
+    let(:company2)     { create(:company) }
+    let(:billing2)     { create(:billing_info, company: company2) }
+    let(:build_order) do
+      build(:order, company: company, branch_office: office, billing_info: billing2)
+    end
+
+    it 'should raise error if branch office doesnt belong to the company selected' do
+      invalid = build_order
+      expect(invalid.valid?).to be false
+      expect(invalid.errors.messages[:billing_info]).not_to be_empty
+    end
+  end
+
   context 'status' do
     let(:order) { create(:order, status: :not_confirmed, company: company,
                                  branch_office: office, billing_info: billing) }

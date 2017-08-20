@@ -3,7 +3,9 @@ if ForestLiana::UserSpace.const_defined?('AdminUserController')
     def index
       whodunnit = forest_user["data"]["data"]["email"]
       if !admin?(whodunnit)
-        raise 'Reservado para Administrador'
+        Rollbar.silenced {
+          raise 'Solo para administradores'
+        }
       else
         super
       end

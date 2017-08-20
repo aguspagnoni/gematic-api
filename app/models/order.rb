@@ -7,6 +7,9 @@ class Order < ApplicationRecord
   STATUSES = [:not_confirmed, :confirmed, :with_invoice].freeze # defaults to 0 -> :not_confirmed
   enum status: STATUSES
 
+  validate :office_belongs_to_company
+  validate :billing_belongs_to_company
+
   scope :due_today, -> { where(delivery_date: Time.zone.today) }
 
   def gross_total
@@ -14,5 +17,17 @@ class Order < ApplicationRecord
       discount = Discount.for_company_and_product(company, item.product)
       item.quantity * (item.product.gross_price - discount.cents)
     end.sum
+  end
+
+  def office_belongs_to_company
+    if branch_office.company != company
+      errors.add(:branch_office, "La oficina tiene que pertenecer a #{company&.name}")
+    end
+  end
+
+  def billing_belongs_to_company
+    if billing_info.company != company
+      errors.add(:billing_info, "La info de facturacion tiene que pertenecer a #{company&.name}")
+    end
   end
 end
