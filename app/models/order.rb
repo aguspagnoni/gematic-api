@@ -20,6 +20,15 @@ class Order < ApplicationRecord
     raise 'boom, mejorame'
   end
 
+  # def gross_total
+  #   PriceList.active.where(company: company)
+  #   order_items.map do |item|
+  #     # discount = Discount.for_company_and_product(company, item.product)
+
+  #     item.quantity *
+  #   end.sum
+  # end
+
   private
 
   def office_belongs_to_company

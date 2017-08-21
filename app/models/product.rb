@@ -13,15 +13,22 @@ class Product < ApplicationRecord
 
   has_paper_trail
 
-  def standard_price
-    cost * 1.5 # TODO: this should be able to be modified by config
+  def price(price_list = nil)
+    if price_list.blank?
+      standard_price
+    else
+      discount = price_list.discounts.find { |discount| discount.product == self }
+      discount.present? ?
+        discount.apply :
+        price_within(price_list)
+    end
   end
 
   def price_within(price_list)
-    after_general_discount = standard_price * price_list.discount_multiplier
-    discount = price_list.discounts.find { |discount| discount.product == self }
-    discount.present? ?
-      after_general_discount - discount.cents :
-      after_general_discount
+    standard_price * price_list.discount_multiplier
+  end
+
+  def standard_price
+    cost * 1.5 # TODO: this should be able to be modified by config
   end
 end

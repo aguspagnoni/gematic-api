@@ -21,8 +21,7 @@ class Discount < ApplicationRecord
   end
 
   def self.for_company_and_product(company, product)
-    raise 'boom, buscar pricelist deberia ser solo dentro de las activas.'
-    company_price_lists = PriceList.where(company: company)
+    company_price_lists = PriceList.active.where(company: company)
     discount = where(product: product, price_list: company_price_lists)
                .order('created_at desc')
                .limit(1)

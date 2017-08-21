@@ -52,23 +52,29 @@ RSpec.describe PriceList, type: :model do
         .not_to raise_error
     end
 
+    context 'SIN lista alguna' do
+      let(:isolated_product) { create(:product) }
+
+      it { expect(isolated_product.price).to eq isolated_product.standard_price }
+    end
+
     context 'SIN desc_particular SIN desc_general' do
       it 'doesnt affect standard price' do
-        expect(product.price_within(price_list)).to eq(product.standard_price)
+        expect(product.price(price_list)).to eq(product.standard_price)
       end
     end
 
     context 'SIN desc_particular CON desc_general' do
       it 'applies general discount' do
-        expect(product.price_within(price_list_10)).to eq price_after_general_disc
+        expect(product.price(price_list_10)).to eq price_after_general_disc
       end
     end
 
     context 'CON desc_particular SIN desc_general' do
       let(:discount) { create(:discount, price_list: price_list, product: product) }
 
-      it 'should apply general discount and then desc_particular' do
-        expect(product.price_within(price_list)).to eq(product.standard_price - discount.cents)
+      it 'should only apply desc_particular' do
+        expect(product.price(price_list)).to eq(product.standard_price - discount.cents)
       end
     end
 
@@ -76,7 +82,7 @@ RSpec.describe PriceList, type: :model do
       let(:discount) { create(:discount, price_list: price_list_10, product: product) }
 
       it 'should apply general discount and then desc_particular' do
-        expect(product.price_within(price_list_10))
+        expect(product.price(price_list_10))
           .to eq(price_after_general_disc - discount.cents)
       end
 
