@@ -22,11 +22,10 @@ RSpec.describe PriceList, type: :model do
       Timecop.freeze('2017-08-21')
     end
     let!(:price_list) do
-      create(:price_list, company: company, expires: '2017-08-22', valid_since: '2017-08-20')
+      create(:price_list_with_company, valid_since: '2017-08-20', expires: '2017-08-22')
     end
     let!(:price_list_err) do
-      create(:price_list, company: company,
-             expires: '2017-08-20', valid_since: '2017-08-18')
+      create(:price_list_with_company, valid_since: '2017-08-18', expires: '2017-08-20')
     end
 
     it 'filters those that are outside the scope' do
@@ -38,17 +37,17 @@ RSpec.describe PriceList, type: :model do
     let(:general_discount) { 10.0 }
     let(:disc_multiplier)  { 0.9 } # 90%
     let(:product_discount) { 2.0 }
-    let(:price_list_10)    { create(:price_list, company: company, general_discount: general_discount) }
-    let(:price_list)       { create(:price_list, company: company) }
+    let(:price_list_10)    { create(:price_list_with_company, general_discount: general_discount) }
+    let(:price_list)       { create(:price_list_with_company) }
     let(:product)          { create(:product, cost: 100) }
     let(:price_after_general_disc) { product.standard_price * disc_multiplier }
 
     it 'validates general discount between 0 and 100' do
-      expect { create(:price_list, company: company, general_discount: -10.0) }
+      expect { create(:price_list_with_company, general_discount: -10.0) }
         .to raise_error(ActiveRecord::RecordInvalid)
-      expect { create(:price_list, company: company, general_discount: 100.1) }
+      expect { create(:price_list_with_company, general_discount: 100.1) }
         .to raise_error(ActiveRecord::RecordInvalid)
-      expect { create(:price_list, company: company, general_discount: 50.0) }
+      expect { create(:price_list_with_company, general_discount: 50.0) }
         .not_to raise_error
     end
 

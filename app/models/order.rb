@@ -12,19 +12,11 @@ class Order < ApplicationRecord
 
   scope :due_today, -> { where(delivery_date: Time.zone.today) }
 
-  # def gross_total
-  #   order_items.map do |item|
-  #     discount = Discount.for_company_and_product(company, item.product)
-  #     item.quantity * (item.product.gross_price - discount.cents)
-  #   end.sum
-  #   raise 'boom, mejorame'
-  # end
-
   def gross_total
     price_list = PriceList.for_company(company)
     order_items.map do |item|
       item.quantity * item.product.price(price_list)
-    end.sum
+    end.sum.round(2)
   end
 
   private

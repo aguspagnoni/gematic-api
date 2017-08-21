@@ -1,10 +1,11 @@
 class PriceList < ApplicationRecord
-  has_many   :discounts
+  has_many   :discounts, dependent: :destroy
   has_many   :products, through: :discounts
   belongs_to :company
   belongs_to :admin_user
   belongs_to :authorizer, class_name: 'AdminUser', foreign_key: 'authorizer_id', optional: true
 
+  validates_uniqueness_of :company_id
   validates_numericality_of :general_discount, greater_than_or_equal_to: 0.0, less_than: 100.0
   validates :name, :expires, :valid_since, presence: true
   validate :expires_after_valid_date

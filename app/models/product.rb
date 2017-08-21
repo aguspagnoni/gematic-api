@@ -13,6 +13,8 @@ class Product < ApplicationRecord
 
   has_paper_trail
 
+  COST_MULTIPLIER = ENV.fetch('COST_MULTIPLIER', 1.5)
+
   def price(price_list = nil)
     if price_list.blank?
       standard_price
@@ -29,6 +31,6 @@ class Product < ApplicationRecord
   end
 
   def standard_price
-    cost * 1.5 # TODO: this should be able to be modified by config
+    cost * COST_MULTIPLIER
   end
 end
