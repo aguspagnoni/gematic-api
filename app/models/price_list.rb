@@ -9,6 +9,8 @@ class PriceList < ApplicationRecord
   validates :name, :expires, :valid_since, presence: true
   validate :expires_after_valid_date
 
+  scope :active, -> { where('valid_since <= :today AND expires >= :today', { today: Date.today }) }
+
   has_paper_trail
 
   PERMITED_PARAMS = column_names - %w(id created_at updated_at next_price_list_id)

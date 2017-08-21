@@ -17,6 +17,23 @@ RSpec.describe PriceList, type: :model do
     expect(price_list.details).to match_array(a_hash_including(list_details))
   end
 
+  describe 'active scope' do
+    before do
+      Timecop.freeze('2017-08-21')
+    end
+    let!(:price_list) do
+      create(:price_list, company: company, expires: Date.tomorrow, valid_since: Date.yesterday)
+    end
+    let!(:price_list_err) do
+      create(:price_list, company: company,
+             expires: Date.yesterday, valid_since: Date.yesterday - 1.day)
+    end
+
+    it 'filters those that are outside the scope' do
+      expect(PriceList.active).to match_array([price_list])
+    end
+  end
+
   describe 'General Discounts' do
     let(:general_discount) { 10.0 }
     let(:disc_multiplier)  { 0.9 } # 90%
