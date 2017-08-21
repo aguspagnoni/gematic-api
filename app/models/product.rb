@@ -12,4 +12,8 @@ class Product < ApplicationRecord
   mount_uploader :image, PictureUploader
 
   has_paper_trail
+
+  def standard_price
+    cost * 1.5
+  end
 end

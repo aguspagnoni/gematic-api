@@ -7,6 +7,13 @@ class Discount < ApplicationRecord
 
   has_paper_trail
 
+  before_save :set_final_price, if: -> { fixed }
+
+  def apply
+    base_price = fixed ? final_price : product.standard_price
+    base_price - cents
+  end
+
   def self.empty_discount
     OpenStruct.new(cents: 0)
   end
@@ -17,6 +24,12 @@ class Discount < ApplicationRecord
                .order('updated_at desc')
                .limit(1)
     discount.empty? ? empty_discount : discount.first
+  end
+
+  private
+
+  def set_final_price
+    self.final_price = product.standard_price
   end
 
   # Note: It may happen that for some exception the discount is greater than the cost
