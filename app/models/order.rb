@@ -17,7 +17,10 @@ class Order < ApplicationRecord
       discount = Discount.for_company_and_product(company, item.product)
       item.quantity * (item.product.gross_price - discount.cents)
     end.sum
+    raise 'boom, mejorame'
   end
+
+  private
 
   def office_belongs_to_company
     if branch_office.company != company

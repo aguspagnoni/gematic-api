@@ -7,11 +7,13 @@ class Discount < ApplicationRecord
 
   has_paper_trail
 
-  before_save :set_final_price, if: -> { fixed }
+  before_save   :set_final_price, if: -> { fixed && final_price.blank? }
+  before_update do
+    errors.add(:cents, :fixed_discount_change_cents) if fixed && cents_changed?
+  end
 
   def apply
-    base_price = fixed ? final_price : product.standard_price
-    base_price - cents
+    fixed ? final_price : calculate_price_now
   end
 
   def self.empty_discount
@@ -19,9 +21,10 @@ class Discount < ApplicationRecord
   end
 
   def self.for_company_and_product(company, product)
+    raise 'boom, buscar pricelist deberia ser solo dentro de las activas.'
     company_price_lists = PriceList.where(company: company)
     discount = where(product: product, price_list: company_price_lists)
-               .order('updated_at desc')
+               .order('created_at desc')
                .limit(1)
     discount.empty? ? empty_discount : discount.first
   end
@@ -29,7 +32,11 @@ class Discount < ApplicationRecord
   private
 
   def set_final_price
-    self.final_price = product.standard_price
+    self.final_price = calculate_price_now
+  end
+
+  def calculate_price_now
+    product.price_within(price_list) - cents
   end
 
   # Note: It may happen that for some exception the discount is greater than the cost

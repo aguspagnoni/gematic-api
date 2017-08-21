@@ -11,7 +11,7 @@ RSpec.describe Discount, type: :model do
       create(:discount, price_list: price_list, product: product, fixed: true)
     end
     # Note the ! that makes it run before the update
-    let!(:fixed_price) { product.standard_price - fixed_discount.cents }
+    let!(:fixed_price) { product.price_within(price_list) - fixed_discount.cents }
 
     it 'uses gross price frozen at creation time' do
       expect { product.update(cost: product.cost + 1) }
@@ -21,7 +21,7 @@ RSpec.describe Discount, type: :model do
 
     it 'varies only if discount cents itself change' do
       expect { fixed_discount.update(cents: fixed_discount.cents + 1) }
-        .to change(fixed_discount, :apply)
+        .not_to raise_error
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Discount, type: :model do
       create(:discount, price_list: price_list, product: product)
     end
     # Note this will be run after update
-    let(:final_price) { product.standard_price - dynamic_discount.cents }
+    let(:final_price) { product.price_within(price_list) - dynamic_discount.cents }
 
     it 'uses gross price when requested' do
       expect { product.update(cost: product.cost + 1) }

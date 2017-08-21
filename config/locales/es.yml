@@ -8,6 +8,7 @@ es:
       expires_validation: tiene que ser posterior a la fecha de activación
       price_list_recursion: tiene que ser distinto a la siguiente lista
       discount_cents_greater_product_cost: tiene que ser menor al costo del producto
+      fixed_discount_change_cents: No se puede cambiar el descuento a un Descuento Congelado
   activerecord:
     errors:
       models:

@@ -5,8 +5,9 @@ class PriceList < ApplicationRecord
   belongs_to :admin_user
   belongs_to :authorizer, class_name: 'AdminUser', foreign_key: 'authorizer_id', optional: true
 
+  validates_numericality_of :general_discount, greater_than_or_equal_to: 0.0, less_than: 100.0
   validates :name, :expires, :valid_since, presence: true
-  validate  :expires_after_valid_date
+  validate :expires_after_valid_date
 
   has_paper_trail
 
@@ -22,6 +23,10 @@ class PriceList < ApplicationRecord
     errors.add(:authorizer, :privilege_validation) if !authorizer.is_a?(AdminUser) || authorizer.back_office?
     raise ActiveRecord::RecordNotSaved if errors.present?
     update!(authorized_at: Time.zone.now, authorizer: authorizer)
+  end
+
+  def discount_multiplier
+    1 - general_discount / 100.0
   end
 
   private

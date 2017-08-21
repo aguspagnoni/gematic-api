@@ -17,6 +17,71 @@ RSpec.describe PriceList, type: :model do
     expect(price_list.details).to match_array(a_hash_including(list_details))
   end
 
+  describe 'General Discounts' do
+    let(:general_discount) { 10.0 }
+    let(:disc_multiplier)  { 0.9 } # 90%
+    let(:product_discount) { 2.0 }
+    let(:price_list_10)    { create(:price_list, company: company, general_discount: general_discount) }
+    let(:price_list)       { create(:price_list, company: company) }
+    let(:product)          { create(:product, cost: 100) }
+    let(:price_after_general_disc) { product.standard_price * disc_multiplier }
+
+    it 'validates general discount between 0 and 100' do
+      expect { create(:price_list, company: company, general_discount: -10.0) }
+        .to raise_error(ActiveRecord::RecordInvalid)
+      expect { create(:price_list, company: company, general_discount: 100.1) }
+        .to raise_error(ActiveRecord::RecordInvalid)
+      expect { create(:price_list, company: company, general_discount: 50.0) }
+        .not_to raise_error
+    end
+
+    context 'SIN desc_particular SIN desc_general' do
+      it 'doesnt affect standard price' do
+        expect(product.price_within(price_list)).to eq(product.standard_price)
+      end
+    end
+
+    context 'SIN desc_particular CON desc_general' do
+      it 'applies general discount' do
+        expect(product.price_within(price_list_10)).to eq price_after_general_disc
+      end
+    end
+
+    context 'CON desc_particular SIN desc_general' do
+      let(:discount) { create(:discount, price_list: price_list, product: product) }
+
+      it 'should apply general discount and then desc_particular' do
+        expect(product.price_within(price_list)).to eq(product.standard_price - discount.cents)
+      end
+    end
+
+    context 'CON desc_particular CON desc_general' do
+      let(:discount) { create(:discount, price_list: price_list_10, product: product) }
+
+      it 'should apply general discount and then desc_particular' do
+        expect(product.price_within(price_list_10))
+          .to eq(price_after_general_disc - discount.cents)
+      end
+
+      context 'when Discount is fixed' do
+        let(:fixed_discount) do
+          create(:discount, price_list: price_list_10, product: product, fixed: true)
+        end
+
+        it 'should not change the final price after updating cost' do
+          expect { fixed_discount.update(cents: fixed_discount.cents + 1) }
+            .not_to change(fixed_discount, :apply)
+        end
+      end
+    end
+  end
+
+  describe '#discount_multiplier' do
+    let(:price_list) { create(:price_list, company: company, general_discount: 12.5) }
+
+    it { expect(price_list.discount_multiplier).to eq(0.875) }
+  end
+
   describe 'authorizing a PriceList' do
     let(:authorizer)      { create(:admin_user, privilege: :supervisor) }
     let(:bad_authorizer)  { create(:admin_user, privilege: :back_office) }
