@@ -15,6 +15,13 @@ class PriceList < ApplicationRecord
 
   PERMITED_PARAMS = column_names - %w(id created_at updated_at next_price_list_id)
 
+  def self.for_company(company)
+    active.where(company: company)
+          .order('created_at desc')
+          .limit(1)
+          .first
+  end
+
   def details
     discounts.map { |discount| [{ discount: discount, product: discount.product }] }
   end

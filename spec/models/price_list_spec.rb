@@ -22,11 +22,11 @@ RSpec.describe PriceList, type: :model do
       Timecop.freeze('2017-08-21')
     end
     let!(:price_list) do
-      create(:price_list, company: company, expires: Date.tomorrow, valid_since: Date.yesterday)
+      create(:price_list, company: company, expires: '2017-08-22', valid_since: '2017-08-20')
     end
     let!(:price_list_err) do
       create(:price_list, company: company,
-             expires: Date.yesterday, valid_since: Date.yesterday - 1.day)
+             expires: '2017-08-20', valid_since: '2017-08-18')
     end
 
     it 'filters those that are outside the scope' do
