@@ -43,6 +43,6 @@ class Discount < ApplicationRecord
   # => If this happens take into consideration adding a condition on WHO is creating this.
   # => only high rank admin companys should be able to create one exception to this rule.
   def human_error_over_product
-    errors.add(:cents, :discount_cents_greater_product_cost) if cents > product.cost
+    errors.add(:cents, :discount_cents_greater_product_cost) if cents > product.cost * 100.0
   end
 end
