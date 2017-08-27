@@ -22,6 +22,8 @@ es:
               taken: Ese email ya existe
         price_list:
           attributes:
+            company_id:
+              taken: Se permite una lista de precio por cliente
             name:
               blank: 'Falta poner nombre a la lista de precios'
         user:

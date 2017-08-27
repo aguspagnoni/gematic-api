@@ -27,6 +27,10 @@ class PriceList < ApplicationRecord
     discounts.map { |discount| [{ discount: discount, product: discount.product }] }
   end
 
+  def authorized?
+    !authorized_at.blank?
+  end
+
   def authorize!(authorizer)
     @called_from_inside = true
     errors.add(:authorizer, :same_authorizer_validation) if admin_user == authorizer

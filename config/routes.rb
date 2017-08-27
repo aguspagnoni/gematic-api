@@ -1,7 +1,6 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
-  mount ForestLiana::Engine => '/forest'
   resources :branch_offices
   mount Localtower::Engine, at: 'localtower' if Rails.env.development?
   mount Sidekiq::Web => '/sidekiq'
@@ -19,4 +18,9 @@ Rails.application.routes.draw do
   resources :orders
   resources :products
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  mount ForestLiana::Engine => '/forest'
+  namespace :forest do
+    post '/actions/autorizar' => 'price_lists#authorize_list'
+  end
 end

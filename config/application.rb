@@ -28,5 +28,12 @@ module GematicApi
     config.api_only = true
     config.time_zone = "Buenos Aires"
     config.active_job.queue_adapter = :sidekiq
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'app.forestadmin.com'
+        resource '*', headers: :any, methods: :any
+      end
+    end
   end
 end
