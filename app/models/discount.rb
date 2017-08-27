@@ -16,6 +16,10 @@ class Discount < ApplicationRecord
     fixed ? final_price : calculate_price_now
   end
 
+  def calculate_price_now
+    (product.price_within(price_list) - cents).round(2)
+  end
+
   def self.empty_discount
     OpenStruct.new(cents: 0)
   end
@@ -32,10 +36,6 @@ class Discount < ApplicationRecord
 
   def set_final_price
     self.final_price = calculate_price_now
-  end
-
-  def calculate_price_now
-    product.price_within(price_list) - cents
   end
 
   # Note: It may happen that for some exception the discount is greater than the cost
