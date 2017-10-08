@@ -28,3 +28,4 @@ public/uploads/*
 coverage/*
 .mail.yml
 .mailgun.yml
+pg_dump_2017_10_08.sql

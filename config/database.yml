@@ -13,6 +13,7 @@ test: &test
   database: gematic-api_test
 
 production:
+  database: gematic-api_production
   adapter: postgresql
   encoding: unicode
   pool: 50
