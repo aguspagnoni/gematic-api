@@ -13,7 +13,7 @@ class Product < ApplicationRecord
 
   has_paper_trail
 
-  COST_MULTIPLIER = ENV.fetch('COST_MULTIPLIER', 1.5)
+  COST_MULTIPLIER = ENV.fetch('COST_MULTIPLIER', 1.5).to_f
 
   def price(price_list = nil)
     if price_list.blank?
