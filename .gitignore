@@ -26,3 +26,5 @@ spec/examples.txt
 
 public/uploads/*
 coverage/*
+.mail.yml
+.mailgun.yml
