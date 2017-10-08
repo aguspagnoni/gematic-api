@@ -1,8 +1,0 @@
-host: 'smtp.mandrillapp.com'
-port: '587'
-user_name: 'aguspagnoni@gmail.com'
-password: '59a8q9alJEUq6COKONBxbA'
-domain: 'a.com'
-authentication: 'login'
-enable_starttls_auto: 'true'
-openssl_verify_mode: 'true'

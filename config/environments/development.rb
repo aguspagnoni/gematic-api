@@ -45,19 +45,16 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   mail = AppConfiguration.for :mail
-  config.action_mailer.default_url_options = { host: mail.host, only_path: false }
-  config.action_mailer.asset_host = mail.host
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors =  true
   config.action_mailer.default charset: 'utf-8'
   config.action_mailer.smtp_settings = {
-    enable_starttls_auto: true,
-    address: mail.host,
-    port: mail.port.to_i,
+    address: mail.smtp_server,
+    port: mail.smtp_port.to_i,
     domain: mail.domain,
-    user_name: mail.user_name,
-    password: mail.password,
-    authentication: mail.authentication
+    user_name: mail.smtp_login,
+    password: mail.smtp_password,
+    authentication: :plain
   }
 end
