@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170826182601) do
+ActiveRecord::Schema.define(version: 20171029203404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,23 @@ ActiveRecord::Schema.define(version: 20170826182601) do
     t.index ["company_id"], name: "index_price_lists_on_company_id", using: :btree
   end
 
+  create_table "product_inputs", force: :cascade do |t|
+    t.integer  "quantity",          default: 0
+    t.float    "unit_price"
+    t.string   "reference_number"
+    t.string   "image"
+    t.integer  "admin_user_id"
+    t.integer  "product_id"
+    t.integer  "seller_company_id"
+    t.integer  "buyer_company_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["admin_user_id"], name: "index_product_inputs_on_admin_user_id", using: :btree
+    t.index ["buyer_company_id"], name: "index_product_inputs_on_buyer_company_id", using: :btree
+    t.index ["product_id"], name: "index_product_inputs_on_product_id", using: :btree
+    t.index ["seller_company_id"], name: "index_product_inputs_on_seller_company_id", using: :btree
+  end
+
   create_table "products", force: :cascade do |t|
     t.string   "name"
     t.string   "image"
@@ -146,6 +163,7 @@ ActiveRecord::Schema.define(version: 20170826182601) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.integer  "status",      default: 0
+    t.integer  "stock"
     t.index ["code"], name: "index_products_on_code", unique: true, using: :btree
   end
 
@@ -176,4 +194,6 @@ ActiveRecord::Schema.define(version: 20170826182601) do
   end
 
   add_foreign_key "price_lists", "admin_users", column: "authorizer_id"
+  add_foreign_key "product_inputs", "billing_infos", column: "buyer_company_id"
+  add_foreign_key "product_inputs", "billing_infos", column: "seller_company_id"
 end
