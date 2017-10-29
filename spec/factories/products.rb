@@ -5,5 +5,6 @@ FactoryGirl.define do
     description   { Faker::Lorem.sentence }
     gross_price   { Faker::Number.number(5) }
     cost          { Faker::Number.number(3) }
+    stock         { Faker::Number.number(2) }
   end
 end

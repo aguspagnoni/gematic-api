@@ -9,6 +9,8 @@ es:
       price_list_recursion: tiene que ser distinto a la siguiente lista
       discount_cents_greater_product_cost: tiene que ser menor al costo del producto
       fixed_discount_change_cents: No se puede cambiar el descuento a un Descuento Congelado
+      product_input_same_company: El proveedor tiene que ser distinto a la empresa que la compra
+      product_input_already_registered: El comprobante ya estaba ingresado
   activerecord:
     errors:
       models:
