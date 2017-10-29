@@ -1,6 +1,7 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :product_inputs
   resources :branch_offices
   mount Localtower::Engine, at: 'localtower' if Rails.env.development?
   mount Sidekiq::Web => '/sidekiq'

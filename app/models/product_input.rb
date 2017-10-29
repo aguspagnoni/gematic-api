@@ -1,0 +1,2 @@
+class ProductInput < ApplicationRecord
+end
