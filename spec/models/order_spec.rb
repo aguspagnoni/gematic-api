@@ -38,8 +38,10 @@ RSpec.describe Order, type: :model do
   end
 
   context 'status' do
-    let(:order) { create(:order, status: :not_confirmed, company: company,
-                                 branch_office: office, billing_info: billing) }
+    let(:order) {
+      create(:order, status: :not_confirmed, company: company,
+                     branch_office: office, billing_info: billing)
+    }
 
     it 'does not allow any status as valid' do
       expect { build(:order, status: 999) }.to raise_error(ArgumentError)
@@ -47,6 +49,52 @@ RSpec.describe Order, type: :model do
 
     it 'changes status accordingly' do
       expect { order.confirmed! }.to change(order, :status).from('not_confirmed').to('confirmed')
+    end
+
+    context 'stock of a product after change of state' do
+      let(:product)        { create(:product) }
+      let(:product2)       { create(:product) }
+      let(:amount_ordered) { 1 }
+      let(:create_order) do
+        create(:order_item, product: product, order: order, quantity: amount_ordered)
+      end
+      let(:create_order2) do
+        create(:order_item, product: product2, order: order, quantity: amount_ordered)
+      end
+
+      context 'creating an UNCONFIRMED order' do
+        it 'does not alter product stock' do
+          expect {
+            create_order
+            product.reload
+          }.not_to change(product, :stock)
+        end
+      end
+
+      context 'order status UNCONFIRMED -> CONFIRMED' do
+        before do
+          create_order
+          create_order2
+        end
+
+        it 'alter product stock' do
+          expect do
+            order.confirmed!
+            product.reload
+            product2.reload
+          end.to change(product, :stock).by(-amount_ordered)
+            .and change(product2, :stock).by(-amount_ordered)
+        end
+      end
+
+      context 'order status CONFIRMED -> WITH_INVOICE' do
+        before { create_order }
+
+        it 'does not alter product stock' do
+          expect { order.with_invoice! }
+            .not_to change(product.reload, :stock)
+        end
+      end
     end
   end
 
@@ -57,9 +105,10 @@ RSpec.describe Order, type: :model do
     let(:product_3)   { create(:product, cost: 1000 / Product::COST_MULTIPLIER) }
     let!(:discount_1) { create(:discount, cents: 5, product: product_1, price_list: price_list) }
     let!(:discount_2) { create(:discount, cents: 15, product: product_2, price_list: price_list) }
-    let(:order)       { create(:order, company: price_list.company, branch_office: office,
-                                       billing_info: billing) }
     let(:products)    { [product_1, product_2] }
+    let(:order) do
+      create(:order, company: price_list.company, branch_office: office, billing_info: billing)
+    end
 
     before do
       products.map do |product|

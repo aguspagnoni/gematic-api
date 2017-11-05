@@ -7,6 +7,8 @@ class Order < ApplicationRecord
   STATUSES = [:not_confirmed, :confirmed, :with_invoice].freeze # defaults to 0 -> :not_confirmed
   enum status: STATUSES
 
+  after_save  :reduce_products_stock
+
   validate :office_belongs_to_company
   validate :billing_belongs_to_company
 
@@ -30,6 +32,14 @@ class Order < ApplicationRecord
   def billing_belongs_to_company
     if billing_info.company != company
       errors.add(:billing_info, "La info de facturacion tiene que pertenecer a #{company&.name}")
+    end
+  end
+
+  def reduce_products_stock
+    if changes['status'] == ['not_confirmed', 'confirmed']
+      order_items.each do |item|
+        item.product.reduce_stock(item.quantity)
+      end
     end
   end
 end

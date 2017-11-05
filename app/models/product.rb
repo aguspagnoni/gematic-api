@@ -33,4 +33,9 @@ class Product < ApplicationRecord
   def standard_price
     cost * COST_MULTIPLIER
   end
+
+  def reduce_stock(amount)
+    self.stock -= amount
+    save!
+  end
 end
