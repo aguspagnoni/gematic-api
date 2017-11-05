@@ -14,10 +14,15 @@ RSpec.describe ProductInput, type: :model do
     context 'happy path' do
       let(:product)               { create(:product) }
       let(:new_stock)             { 1 }
-      let(:create_product_input)  { create(:product_input, product: product, quantity: new_stock) }
+      let(:product_input)  { create(:product_input, product: product, quantity: new_stock) }
 
       it 'updates product stock after create' do
-        expect { create_product_input }.to change(product, :stock).by(new_stock)
+        expect { product_input }.to change(product, :stock).by(new_stock)
+      end
+
+      it 'must have a valid buyer' do
+        razon_social = product_input.buyer_company.razon_social
+        expect(ProductInput::VALID_BUYERS).to include(razon_social)
       end
     end
 
@@ -53,6 +58,20 @@ RSpec.describe ProductInput, type: :model do
       it 'accepts same reference number from different companies' do
         subject2 = build(:product_input, reference_number: reference_number, seller_company: company_2)
         expect(subject2.valid?).to be true
+      end
+    end
+
+    context 'with invalid buyer company' do
+      let(:error_msg)      { I18n.t 'errors.messages.incorrect_buyer_company' }
+      let(:product)        { create(:product) }
+      let(:billing_info)   { create(:billing_info, razon_social: 'test') }
+      let(:new_stock)      { 1 }
+      let(:product_input)  { build(:product_input, buyer_company: billing_info,
+                                                    product: product, quantity: new_stock) }
+
+      it 'remarks invalid buyer' do
+        expect(product_input.valid?).to be false
+        expect(product_input.errors.messages[:buyer_company].first).to eq error_msg
       end
     end
   end

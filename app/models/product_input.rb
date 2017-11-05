@@ -9,21 +9,28 @@ class ProductInput < ApplicationRecord
   validates_presence_of :product, :admin_user, :buyer_company, :seller_company,
                         :reference_number, :unit_price, :quantity
   validates_numericality_of :unit_price, :quantity, greater_than: 0
-  validate :validate_companies, :validate_input_already_registered
+  validate :different_companies, :product_input_already_registered, :who_can_buy_products
 
   before_save :update_product_stock
 
+  VALID_BUYERS = ['ILIT FACILITY SERVICES S.A.', 'FAMTECH SA', 'GEMATIC SRL']
+
   private
 
-  def validate_companies
+  def different_companies
     errors.add(:seller_company, :product_input_same_company) if buyer_company == seller_company
   end
 
-  def validate_input_already_registered
-    errors.add(:seller_company, :product_input_already_registered) if already_exists?
+  def product_input_already_registered
+    errors.add(:seller_company, :product_input_already_registered) if product_input_repeated?
   end
 
-  def already_exists?
+  def who_can_buy_products
+    valid_company = VALID_BUYERS.include?(buyer_company&.razon_social)
+    errors.add(:buyer_company, :incorrect_buyer_company) unless valid_company
+  end
+
+  def product_input_repeated?
     ProductInput.exists?(seller_company: seller_company, reference_number: reference_number)
   end
 
