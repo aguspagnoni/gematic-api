@@ -9,9 +9,10 @@ class ProductInput < ApplicationRecord
   validates_presence_of :product, :admin_user, :buyer_company, :seller_company,
                         :reference_number, :unit_price, :quantity
   validates_numericality_of :unit_price, :quantity, greater_than: 0
-  validate :different_companies, :product_input_already_registered, :who_can_buy_products
+  validate :different_companies, :who_can_buy_products
 
-  before_save :update_product_stock
+  before_save :product_input_already_registered
+  after_save  :update_product_stock
 
   VALID_BUYERS = ['ILIT FACILITY SERVICES S.A.', 'FAMTECH SA', 'GEMATIC SRL']
 
@@ -22,7 +23,10 @@ class ProductInput < ApplicationRecord
   end
 
   def product_input_already_registered
-    errors.add(:seller_company, :product_input_already_registered) if product_input_repeated?
+    if product_input_repeated?
+      errors.add(:seller_company, :product_input_already_registered)
+      throw(:abort)
+    end
   end
 
   def who_can_buy_products

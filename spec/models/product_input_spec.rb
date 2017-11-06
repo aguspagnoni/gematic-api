@@ -51,7 +51,7 @@ RSpec.describe ProductInput, type: :model do
       end
 
       it 'validates the same reference number not be created twice for the same Provider' do
-        expect(subject.valid?).to be false
+        expect(subject.save).to be false
         expect(subject.errors.messages[:seller_company].first).to eq error_msg
       end
 
