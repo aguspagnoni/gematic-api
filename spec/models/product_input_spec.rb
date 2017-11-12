@@ -27,7 +27,7 @@ RSpec.describe ProductInput, type: :model do
     end
 
     context 'buyer and seller are the same' do
-      let(:company) { create(:billing_info) }
+      let(:company) { create(:company) }
       let(:error_msg)  { I18n.t 'errors.messages.product_input_same_company' }
 
       subject { build(:product_input, buyer_company: company, seller_company: company) }
@@ -40,8 +40,8 @@ RSpec.describe ProductInput, type: :model do
 
     context 'with already registered inputs' do
       let(:error_msg)         { I18n.t 'errors.messages.product_input_already_registered' }
-      let(:company_1)         { create(:billing_info) }
-      let(:company_2)         { create(:billing_info) }
+      let(:company_1)         { create(:company) }
+      let(:company_2)         { create(:company) }
       let(:reference_number)  { '1' }
 
       subject { build(:product_input, reference_number: reference_number, seller_company: company_1) }
@@ -64,9 +64,9 @@ RSpec.describe ProductInput, type: :model do
     context 'with invalid buyer company' do
       let(:error_msg)      { I18n.t 'errors.messages.incorrect_buyer_company' }
       let(:product)        { create(:product) }
-      let(:billing_info)   { create(:billing_info, razon_social: 'test') }
+      let(:buyer_company)  { create(:company, razon_social: 'test') }
       let(:new_stock)      { 1 }
-      let(:product_input)  { build(:product_input, buyer_company: billing_info,
+      let(:product_input)  { build(:product_input, buyer_company: buyer_company,
                                                     product: product, quantity: new_stock) }
 
       it 'remarks invalid buyer' do

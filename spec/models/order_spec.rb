@@ -3,17 +3,15 @@ require 'rails_helper'
 RSpec.describe Order, type: :model do
   it { should have_many :products }
   it { should belong_to :branch_office }
-  it { should belong_to :billing_info }
 
   let(:company)     { create(:company) }
   let(:office)      { create(:branch_office, company: company) }
-  let(:billing)     { create(:billing_info, company: company) }
 
   context 'branch_office.company != order.company' do
     let(:company2)     { create(:company) }
     let(:office2)      { create(:branch_office, company: company2) }
     let(:build_order) do
-      build(:order, company: company, branch_office: office2, billing_info: billing)
+      build(:order, company: company, branch_office: office2)
     end
 
     it 'should raise error if branch office doesnt belong to the company selected' do
@@ -23,24 +21,10 @@ RSpec.describe Order, type: :model do
     end
   end
 
-  context 'billing_info.company != order.company' do
-    let(:company2)     { create(:company) }
-    let(:billing2)     { create(:billing_info, company: company2) }
-    let(:build_order) do
-      build(:order, company: company, branch_office: office, billing_info: billing2)
-    end
-
-    it 'should raise error if branch office doesnt belong to the company selected' do
-      invalid = build_order
-      expect(invalid.valid?).to be false
-      expect(invalid.errors.messages[:billing_info]).not_to be_empty
-    end
-  end
-
   context 'status' do
     let(:order) {
       create(:order, status: :not_confirmed, company: company,
-                     branch_office: office, billing_info: billing)
+                     branch_office: office)
     }
 
     it 'does not allow any status as valid' do
@@ -107,7 +91,7 @@ RSpec.describe Order, type: :model do
     let!(:discount_2) { create(:discount, cents: 15, product: product_2, price_list: price_list) }
     let(:products)    { [product_1, product_2] }
     let(:order) do
-      create(:order, company: price_list.company, branch_office: office, billing_info: billing)
+      create(:order, company: price_list.company, branch_office: office)
     end
 
     before do
@@ -149,9 +133,7 @@ RSpec.describe Order, type: :model do
     context 'when products are inside price list but belong to different company' do
       let(:company2)              { create(:company) }
       let(:office2)               { create(:branch_office, company: company2) }
-      let(:billing2)              { create(:billing_info, company: company2) }
-      let(:order)                 { create(:order, company: company2, branch_office: office2,
-                                                   billing_info: billing2) }
+      let(:order)                 { create(:order, company: company2, branch_office: office2) }
       let(:products)              { [product_1, product_2, product_3] }
       let(:expected_simple_gross) { 1300 } # p1 + p2 + p3
 

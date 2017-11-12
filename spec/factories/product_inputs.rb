@@ -6,7 +6,7 @@ FactoryGirl.define do
     image             { Faker::Lorem.sentence }
     admin_user
     product
-    seller_company    { create(:billing_info) }
-    buyer_company     { create(:billing_info, razon_social: ProductInput::VALID_BUYERS.sample) }
+    seller_company    { create(:company) }
+    buyer_company     { create(:company, razon_social: ProductInput::VALID_BUYERS.sample) }
   end
 end

@@ -1,6 +1,6 @@
 class ProductInput < ApplicationRecord
-  belongs_to :seller_company, :class_name => 'BillingInfo'
-  belongs_to :buyer_company, :class_name => 'BillingInfo'
+  belongs_to :seller_company, :class_name => 'Company'
+  belongs_to :buyer_company, :class_name => 'Company'
   belongs_to :admin_user
   belongs_to :product
 

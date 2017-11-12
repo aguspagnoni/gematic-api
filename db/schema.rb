@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171112201334) do
+ActiveRecord::Schema.define(version: 20171112222951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,22 +24,6 @@ ActiveRecord::Schema.define(version: 20171112201334) do
     t.datetime "updated_at",      null: false
     t.string   "image"
     t.string   "password_digest"
-  end
-
-  create_table "billing_infos", force: :cascade do |t|
-    t.string   "address"
-    t.string   "cuit"
-    t.string   "condition"
-    t.string   "razon_social"
-    t.integer  "company_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-    t.string   "province"
-    t.string   "localidad"
-    t.string   "phone"
-    t.string   "zipcode"
-    t.string   "other_info"
-    t.index ["company_id"], name: "index_billing_infos_on_company_id", using: :btree
   end
 
   create_table "branch_offices", force: :cascade do |t|
@@ -115,9 +99,7 @@ ActiveRecord::Schema.define(version: 20171112201334) do
     t.integer  "company_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "billing_info_id"
     t.integer  "branch_office_id"
-    t.index ["billing_info_id"], name: "index_orders_on_billing_info_id", using: :btree
     t.index ["branch_office_id"], name: "index_orders_on_branch_office_id", using: :btree
     t.index ["company_id"], name: "index_orders_on_company_id", using: :btree
   end
@@ -203,6 +185,6 @@ ActiveRecord::Schema.define(version: 20171112201334) do
   end
 
   add_foreign_key "price_lists", "admin_users", column: "authorizer_id"
-  add_foreign_key "product_inputs", "billing_infos", column: "buyer_company_id"
-  add_foreign_key "product_inputs", "billing_infos", column: "seller_company_id"
+  add_foreign_key "product_inputs", "companies", column: "buyer_company_id"
+  add_foreign_key "product_inputs", "companies", column: "seller_company_id"
 end
