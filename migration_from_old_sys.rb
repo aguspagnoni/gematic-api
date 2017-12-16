@@ -101,6 +101,23 @@ end
 
 
 
+module EncodingUtils
+  module_function
 
+  ENCODING     = 'UTF-8'.freeze
+  REPLACE_CHAR = '?'.freeze
+
+  def replace_unknown_bytes(string)
+    return if string.nil?
+    string.encode(ENCODING, invalid: :replace, undef: :replace, replace: REPLACE_CHAR)
+  end
+end
+
+f = File.open('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_FASE.csv', 'r')
+contents = f.read
+new_content = EncodingUtils.replace_unknown_bytes(contents)
+f2 = File.open('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_FASE_limpio.csv', 'w')
+f2.write(new_content)
+f2.save
 
 

@@ -35,6 +35,10 @@ gem 'forest_liana'
 gem 'app_configuration'
 gem 'paper_trail'
 
+# Barcode Generation
+gem 'barby'
+gem 'chunky_png'
+
 group :development, :test do
   gem 'database_cleaner'
   gem 'byebug', platform: :mri
