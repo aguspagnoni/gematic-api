@@ -3,4 +3,5 @@ class Forest::PriceList
 
   collection :price_lists
   action 'Autorizar'
+  action 'Descargar TXT'
 end

@@ -1,6 +1,10 @@
 # ForestLiana::ApplicationController takes care of the authentication for you.
 class Forest::PriceListsController < ForestLiana::ApplicationController
 
+  def download_txt
+    send_data 'holis', filename: 'algo.txt'
+  end
+
   def authorize_list
     if user.present? && able_to_authorize_list?(user)
       @msg    = 'Lista/s autorizadas correctamente'
