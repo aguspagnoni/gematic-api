@@ -113,11 +113,11 @@ module EncodingUtils
   end
 end
 
-f = File.open('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_FASE.csv', 'r')
+f = File.open('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_ILIT.csv', 'r')
 contents = f.read
 new_content = EncodingUtils.replace_unknown_bytes(contents)
-f2 = File.open('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_FASE_limpio.csv', 'w')
+f2 = File.open('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_ILIT_limpio.csv', 'w')
 f2.write(new_content)
-f2.save
+f2.close
 
 

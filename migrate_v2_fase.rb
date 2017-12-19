@@ -1,24 +1,31 @@
 require 'csv'
-productos = CSV.read('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_FASE_limpio.csv', { headers: true, header_converters: :symbol, encoding: 'windows-1252:UTF-8' })
+# productos = CSV.read('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_FASE_limpio.csv', { headers: true, header_converters: :symbol, encoding: 'windows-1252:UTF-8' })
+productos = CSV.read('/Users/agustinpagnoni/Downloads/LISTADO_STOCK_ILIT_limpio.csv', { headers: true, header_converters: :symbol, encoding: 'windows-1252:UTF-8' })
 productos_h = productos.map(&:to_hash);nil
 
-not_found = productos_h.reject { |p| Product.find_by(code: p[:codigo]).present? };nil
-not_found2 = not_found.reject { |p| Product.find_by(code: p[:codigo]&.strip&.downcase).present? };nil
+# not_found = productos_h.reject { |p| Product.find_by(code: p[:codigo]).present? };nil
+# not_found2 = not_found.reject { |p| Product.find_by(code: p[:codigo]&.strip&.downcase).present? };nil
 
-productos_h.each do |h|
+category_other = Category.find_by(name: 'OTROS')
+productos_h.each_with_index do |h, index|
+  # next if index < 700
   begin
-    cat         = Category.find_by(name: h[:des_rubro])
+    cat         = Category.find_by(name: h[:des_rubro]) || category_other
     cost        = h[:costo].to_f == 0 ? 99999 : h[:costo].to_f
     gross_price = cost * 1.5
-    next if Product.find_by(name: h[:descripcio], code: h[:codigo])
+    if Product.find_by(name: h[:descripcio]) || Product.find_by(code: h[:codigo]) || Product.find_by(old_code: h[:codigo])
+      puts "Skipping #{h}"
+      next
+    end
     desc = h[:descripcio].blank? ? 'PRODUCTO SIN NOMBRE' : h[:descripcio]
-    code = h[:codigo].blank? ? 'SIN CODIGO' : h[:codigo]
-    prod = Product.create(name: desc, code: code, cost: cost.round(2), gross_price: gross_price.round(2))
+    no_code = "SIN CODIGO-#{Faker::Number.number(7)}"
+    code = h[:codigo].blank? ? no_code : h[:codigo]
+    prod = Product.create(name: desc, code: no_code, old_code: code, cost: cost.round(2), gross_price: gross_price.round(2))
     cat.products << prod
   rescue => e
-    byebug
+    puts "index stopped: #{index}"
     puts e
-    next
+    break
   end
 end
 
@@ -55,3 +62,6 @@ Product.find(604) y Product.find(437) # => codigo ~ 123
 Product.find(227) y Product.find(8) # => codigo ~ 11
 Product.find(867) y Product.find(106) # => codigo ~ 12
 Product.find(406) y Product.find(603) # => codigo ~ 120
+
+
+Product.where.not('length(code) = 13').count
