@@ -1,11 +1,12 @@
 if ForestLiana::UserSpace.const_defined?('ProductController')
   ForestLiana::UserSpace::ProductController.class_eval do
+    include Utils::Forest::Commons
+
     def update
-      whodunnit = forest_user["data"]["data"]["email"]
-      PaperTrail.whodunnit = whodunnit
-      if cost_changed? && !supervisor?(whodunnit)
+      PaperTrail.whodunnit = forest_email
+      if cost_changed? && !at_least_supervisor?
         msg = 'Consulte a un supervisor como cambiar el costo'
-        render json: ForestUtils.toast(msg), status: :unprocessable_entity
+        render json: toast(msg), status: :unprocessable_entity
       else
         super
       end
@@ -15,11 +16,6 @@ if ForestLiana::UserSpace.const_defined?('ProductController')
 
     def cost_changed?
       params.fetch('data')["attributes"]["cost"].present?
-    end
-
-    def supervisor?(whodunnit)
-      user = AdminUser.find_by(email: whodunnit)
-      user&.supervisor? || user&.superadmin?
     end
   end
 end

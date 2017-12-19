@@ -1,8 +1,9 @@
 if ForestLiana::UserSpace.const_defined?('AdminUserController')
   ForestLiana::UserSpace::AdminUserController.class_eval do
+    include Utils::Forest::Commons
+
     def index
-      whodunnit = forest_user["data"]["data"]["email"]
-      if admin_tab? && !admin?(whodunnit)
+      if admin_tab? && !superadmin?
         Rollbar.silenced {
           raise 'Solo para administradores'
         }
@@ -15,10 +16,6 @@ if ForestLiana::UserSpace.const_defined?('AdminUserController')
 
     def admin_tab?
       params['collection'] == 'admin_users'
-    end
-
-    def admin?(whodunnit)
-      AdminUser.find_by(email: whodunnit)&.superadmin?
     end
   end
 end

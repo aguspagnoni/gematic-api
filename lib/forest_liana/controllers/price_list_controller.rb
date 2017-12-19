@@ -1,14 +1,15 @@
 if ForestLiana::UserSpace.const_defined?('PriceListController')
   ForestLiana::UserSpace::PriceListController.class_eval do
+    include Utils::Forest::Commons
 
     NEED_SUPERADMIN = 'Para cambiar las condiciones de una lista de precios pactada,'\
                       'pregunte al administrador'.freeze
 
     def update
       set_price_list
-      PaperTrail.whodunnit = whodunnit
+      PaperTrail.whodunnit = forest_email
       if action_needs_authorization
-        render json: ForestUtils.toast(NEED_SUPERADMIN), status: :bad_request
+        render json: toast(NEED_SUPERADMIN), status: :bad_request
       else
         @price_list.update(price_list_params)
         if @price_list.valid?
@@ -29,18 +30,9 @@ if ForestLiana::UserSpace.const_defined?('PriceListController')
       @price_list = PriceList.find(params[:id])
     end
 
-    def whodunnit
-      forest_user["data"]["data"]["email"]
-    end
-
     def action_needs_authorization
       general_discount_changed = params.fetch('data')['attributes']['general_discount'].present?
       @price_list.authorized? && general_discount_changed && !superadmin?
-    end
-
-    def superadmin?
-      user = AdminUser.find_by(email: whodunnit)
-      user&.superadmin?
     end
 
     # Only allow a trusted parameter "white list" through.
