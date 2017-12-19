@@ -6,6 +6,7 @@ class Forest::PriceListsController < ForestLiana::ApplicationController
     toast_response('Revise su correo electronico', :ok)
   rescue => e
     Rails.logger.debug("Error al armar ReportsMailer: #{e}")
+    Rails.logger.debug("#{e.backtrace.first(5)}")
     toast_response('No pudimos armar el reporte, contacte al Administrador del sitio', :bad_request)
   end
 
