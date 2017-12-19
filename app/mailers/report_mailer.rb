@@ -4,7 +4,7 @@ class ReportMailer < ApplicationMailer
     @pricelist = pricelist
     @recipient = recipient
     @header_data = header_data_hash
-    attachment_name = "lista_precio_#{pricelist.name.split(' ').join('_')}"
+    attachment_name = "lista_precio_#{pricelist.name.split(' ').join('_')}.html"
     attachments[attachment_name] = render :pricelist_summary
     mail(to: recipient.email, subject: I18n.t('mailers.pricelist_summary.subject'))
   end
