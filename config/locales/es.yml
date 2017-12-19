@@ -1,5 +1,7 @@
 es:
   mailers:
+    pricelist_summary:
+      subject: 'Lista de Precio'
     confirmation_email:
       subject: 'Confirmar Cuenta'
   errors:
