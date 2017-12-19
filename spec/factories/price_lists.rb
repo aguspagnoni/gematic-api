@@ -20,4 +20,8 @@ FactoryGirl.define do
   factory :price_list_with_company, parent: :price_list do
     company
   end
+
+  factory :price_list_with_company_and_products, parent: :price_list_with_products do
+    company
+  end
 end

@@ -2,19 +2,23 @@
 class Forest::PriceListsController < ForestLiana::ApplicationController
 
   def download_txt
-    send_data 'holis', filename: 'algo.txt'
+    ReportMailer.pricelist_summary(price_lists.first, user).deliver_now
+    toast_response('Revise su correo electronico', :ok)
+  rescue => e
+    Rails.logger.debug("Error al armar ReportsMailer: #{e}")
+    toast_response('No pudimos armar el reporte, contacte al Administrador del sitio', :bad_request)
   end
 
   def authorize_list
     if user.present? && able_to_authorize_list?(user)
-      @msg    = 'Lista/s autorizadas correctamente'
-      @status = :ok
+      msg    = 'Lista/s autorizadas correctamente'
+      status = :ok
       save_authorization_details
     else
-      @msg    = 'Pregunte a un superivor para que autorize esta lista'
-      @status = :bad_request
+      msg    = 'Pregunte a un superivor para que autorize esta lista'
+      status = :bad_request
     end
-    toast_response
+    toast_response(msg, status)
   end
 
   private
@@ -38,8 +42,8 @@ class Forest::PriceListsController < ForestLiana::ApplicationController
     PriceList.where(id: params[:data][:attributes][:ids])
   end
 
-  def toast_response
-    key = @status == :ok ? 'success' : 'error'
-    render json: { key => @msg }, status: @status
+  def toast_response(msg, status)
+    key = status == :ok ? 'success' : 'error'
+    render json: { key => msg }, status: status
   end
 end

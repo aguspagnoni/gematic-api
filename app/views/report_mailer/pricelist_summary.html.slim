@@ -1,0 +1,21 @@
+h1 = @pricelist.name
+
+- @header_data.each do |data|
+  .header_data
+    b = data[:label]
+    p = data[:text]
+
+table
+  tr
+    td Codigo Producto
+    td Nombre Producto
+    td Descuento
+    td Precio congelado?
+    td Precio despues del descuento (hoy)
+  - @pricelist.discounts.each do |discount|
+    tr.row_data
+      td = discount.product.code
+      td = discount.product.name
+      td = "$ #{discount.cents}"
+      td = discount.fixed ? 'si' : 'no'
+      td = "$ #{discount.final_price || discount.calculate_price_now}"
