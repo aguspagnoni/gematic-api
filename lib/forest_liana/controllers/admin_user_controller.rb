@@ -2,6 +2,7 @@ if ForestLiana::UserSpace.const_defined?('AdminUserController')
   ForestLiana::UserSpace::AdminUserController.class_eval do
     def index
       whodunnit = forest_user["data"]["data"]["email"]
+      Rails.logger.info("Acceso a Tab de administradores(index: #{params.keys.count})")
       if admin_tab? && !admin?(whodunnit)
         Rollbar.silenced {
           raise 'Solo para administradores'
