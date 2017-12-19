@@ -26,8 +26,11 @@ module Utils
       end
 
       def admin_user
-        AdminUser.find_by(email: forest_email) ||
-          AdminUser.create(email: forest_email, name: forest_name, family_name: forest_family_name)
+        user = AdminUser.find_by(email: forest_email)
+        if user.nil?
+          user = AdminUser.create(email: forest_email, name: forest_name, family_name: forest_family_name)
+        end
+        user
       end
     end
   end
