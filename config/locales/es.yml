@@ -2,6 +2,8 @@ es:
   mailers:
     pricelist_summary:
       subject: 'Lista de Precio'
+    order_summary:
+      subject: 'Resumen de Pedido'
     confirmation_email:
       subject: 'Confirmar Cuenta'
   errors:

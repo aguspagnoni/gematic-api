@@ -1,0 +1,32 @@
+h1 Resumen de Orden #{@order.id}
+
+- @header_data.each do |data|
+  .header_data
+    b = data[:label]
+    p = data[:text]
+
+table
+  tr
+    td Codigo Producto
+    td Nombre Producto
+    td Cantidad
+    td Precio sin Descuento
+    td Precio con descuento
+  - @order.order_items.each do |item|
+    tr.row_data
+      td = item.product.code
+      td = item.product.name
+      td = item.quantity
+      td = "$ #{item.product.standard_price}"
+      td = "$ #{item.product.price_within(@pricelist)}"
+  tr
+    td Precio Total
+    td
+    td
+    td = "$ #{@gross_without_discount}"
+    td = "$ #{@order.gross_total} + IVA"
+.header_data
+  b Ahorro
+  p = "#{@savings_percentage} %"
+  p = "$ #{@total_savings}"
+

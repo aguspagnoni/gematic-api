@@ -13,13 +13,24 @@ class Order < ApplicationRecord
   scope :due_today, -> { where(delivery_date: Time.zone.today) }
 
   def gross_total
-    price_list = PriceList.for_company(company)
-    order_items.map do |item|
-      item.quantity * item.product.price(price_list)
-    end.sum.round(2)
+    @gross_total ||= sum_on_items { |item| item.quantity * item.product.price(price_list) }
+  end
+
+  def gross_without_discount
+    @gross_without_discount ||= sum_on_items { |item| item.quantity * item.product.standard_price }
+  end
+
+  def price_list
+    @price_list ||= PriceList.for_company(company)
   end
 
   private
+
+  def sum_on_items(&block)
+    order_items.map do |item|
+      block.call(item)
+    end.sum.round(2)
+  end
 
   def office_belongs_to_company
     if branch_office.company != company
