@@ -2,7 +2,7 @@ if ForestLiana::UserSpace.const_defined?('DiscountController')
   ForestLiana::UserSpace::DiscountController.class_eval do
     include Utils::Forest::Commons
 
-    NEED_SUPERADMIN = 'Para cambiar las condiciones de un descuento pactado, '\
+    NEED_SUPERADMIN ||= 'Para cambiar las condiciones de un descuento pactado, '\
                       'pregunte al administrador'.freeze
 
     def update
