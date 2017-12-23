@@ -27,6 +27,7 @@ class Product < ApplicationRecord
   end
 
   def price_within(price_list)
+    return standard_price if price_list.nil?
     standard_price * price_list.discount_multiplier
   end
 

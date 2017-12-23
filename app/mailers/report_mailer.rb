@@ -18,6 +18,7 @@ class ReportMailer < ApplicationMailer
     @total_savings  = order.gross_without_discount - order.gross_total
     attachment_name = "resumen_de_pedido_#{order.id}.html"
     attachments[attachment_name] = render :order_summary
+    byebug
     mail(to: recipient.email, subject: I18n.t('mailers.order_summary.subject'))
   end
 
