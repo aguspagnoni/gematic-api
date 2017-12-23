@@ -1,4 +1,6 @@
-h1 = @pricelist.name
+.title
+  h1 = @pricelist.name
+  h3 = Date.today.strftime("%d/%m/%Y")
 
 - @header_data.each do |data|
   .header_data

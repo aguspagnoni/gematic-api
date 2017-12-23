@@ -18,8 +18,10 @@ class ReportMailer < ApplicationMailer
     @total_savings  = order.gross_without_discount - order.gross_total
     attachment_name = "resumen_de_pedido_#{order.id}.html"
     attachments[attachment_name] = render :order_summary
-    byebug
-    mail(to: recipient.email, subject: I18n.t('mailers.order_summary.subject'))
+    mail(to: recipient.email,
+         subject: I18n.t('mailers.order_summary.subject'),
+         template_path: 'report_mailer',
+         template_name: 'order_summary')
   end
 
   private
@@ -37,7 +39,7 @@ class ReportMailer < ApplicationMailer
   def order_header_data_hash
     [
       { label: 'Empresa',                   text: @order.company.name },
-      { label: 'Fecha de entrega (d/m/a)',  text: @order.delivery_date.strftime("%d/%m/%Y") },
+      { label: 'Entrega estimada (d/m/a)',  text: @order.delivery_date.strftime("%d/%m/%Y") },
       { label: 'Oficina > Site',            text: @order.branch_office.name },
       { label: 'Oficina > Codigo Postal',   text: @order.branch_office.zipcode },
       { label: 'Oficina > Telefono',        text: @order.branch_office.phone },

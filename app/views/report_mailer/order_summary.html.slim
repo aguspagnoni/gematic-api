@@ -1,4 +1,6 @@
-h1 Resumen de Orden #{@order.id}
+.title
+  h1 Resumen de Orden #{@order.id}
+  h3 = Date.today.strftime("%d/%m/%Y")
 
 - @header_data.each do |data|
   .header_data
@@ -7,11 +9,12 @@ h1 Resumen de Orden #{@order.id}
 
 table
   tr
-    td Codigo Producto
-    td Nombre Producto
-    td Cantidad
-    td Precio sin Descuento
-    td Precio con descuento
+    td.code      Codigo Producto
+    td.name      Nombre Producto
+    td.quantity  Cantidad
+    td.pricewout Precio sin Descuento
+    td.pricewith Precio con descuento
+    td.subtotal  Subtotal
   - @order.order_items.each do |item|
     tr.row_data
       td = item.product.code
@@ -19,14 +22,15 @@ table
       td = item.quantity
       td = "$ #{item.product.standard_price}"
       td = "$ #{item.product.price_within(@pricelist)}"
+      td = "$ #{item.product.price_within(@pricelist) * item.quantity}"
   tr
     td Precio Total
     td
     td
-    td = "$ #{@gross_without_discount}"
+    td
+    td
     td = "$ #{@order.gross_total} + IVA"
 .header_data
   b Ahorro
-  p = "#{@savings_percentage} %"
-  p = "$ #{@total_savings}"
+  p = "$ #{@total_savings} (#{@savings_percentage}%)"
 
