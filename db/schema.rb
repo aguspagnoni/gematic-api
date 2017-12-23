@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223191600) do
+ActiveRecord::Schema.define(version: 20171223202035) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,14 +94,16 @@ ActiveRecord::Schema.define(version: 20171223191600) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer  "status",           default: 0
+    t.integer  "status",               default: 0
     t.date     "delivery_date"
     t.integer  "company_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "branch_office_id"
+    t.integer  "custom_price_list_id"
     t.index ["branch_office_id"], name: "index_orders_on_branch_office_id", using: :btree
     t.index ["company_id"], name: "index_orders_on_company_id", using: :btree
+    t.index ["custom_price_list_id"], name: "index_orders_on_custom_price_list_id", using: :btree
   end
 
   create_table "orders_products", force: :cascade do |t|
@@ -186,6 +188,7 @@ ActiveRecord::Schema.define(version: 20171223191600) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
+  add_foreign_key "orders", "price_lists", column: "custom_price_list_id"
   add_foreign_key "price_lists", "admin_users", column: "authorizer_id"
   add_foreign_key "product_inputs", "companies", column: "buyer_company_id"
   add_foreign_key "product_inputs", "companies", column: "seller_company_id"

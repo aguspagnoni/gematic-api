@@ -1,6 +1,9 @@
 class Order < ApplicationRecord
   has_many    :order_items
   has_many    :products, through: :order_items
+  belongs_to  :custom_price_list, class_name: 'PriceList',
+                                  foreign_key: 'custom_price_list_id',
+                                  optional: true
   belongs_to  :company
   belongs_to  :branch_office
   STATUSES = [:not_confirmed, :confirmed, :with_invoice].freeze # defaults to 0 -> :not_confirmed
@@ -21,7 +24,7 @@ class Order < ApplicationRecord
   end
 
   def price_list
-    @price_list ||= PriceList.for_company(company)
+    @price_list ||= custom_price_list || PriceList.for_company(company)
   end
 
   private

@@ -312,6 +312,7 @@ DEPENDENCIES
   sidekiq
   simplecov
   slim
+  thor
   timecop
 
 RUBY VERSION
