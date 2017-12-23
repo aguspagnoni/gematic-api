@@ -1,8 +1,8 @@
 # ForestLiana::ApplicationController takes care of the authentication for you.
 class Forest::PriceListsController < ForestLiana::ApplicationController
 
-  def download_txt
-    ReportMailer.pricelist_summary(price_lists.first, user).deliver_now
+  def send_summary
+    ReportMailer.pricelist_summary(price_lists.first, admin_user).deliver_now
     toast_response('Revise su correo electronico', :ok)
   rescue => e
     Rails.logger.debug("Error al armar ReportsMailer: #{e}")
@@ -11,7 +11,7 @@ class Forest::PriceListsController < ForestLiana::ApplicationController
   end
 
   def authorize_list
-    if user.present? && able_to_authorize_list?(user)
+    if admin_user.present? && able_to_authorize_list?(admin_user)
       msg    = 'Lista/s autorizadas correctamente'
       status = :ok
       save_authorization_details
@@ -24,27 +24,18 @@ class Forest::PriceListsController < ForestLiana::ApplicationController
 
   private
 
-  def user
-    @admin_user ||= AdminUser.find_by(email: forest_user["data"]["data"]["email"])
-  end
-
-  def able_to_authorize_list?(user)
-    user&.supervisor? || user&.superadmin?
+  def able_to_authorize_list?
+    admin_user&.supervisor? || admin_user&.superadmin?
   end
 
   def save_authorization_details
     price_lists.each do |price_list|
       next if price_list.authorizer.present?
-      price_list.update(authorizer: user, authorized_at: Time.now)
+      price_list.update(authorizer: admin_user, authorized_at: Time.now)
     end
   end
 
   def price_lists
     PriceList.where(id: params[:data][:attributes][:ids])
-  end
-
-  def toast_response(msg, status)
-    key = status == :ok ? 'success' : 'error'
-    render json: { key => msg }, status: status
   end
 end

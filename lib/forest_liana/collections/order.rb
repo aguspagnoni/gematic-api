@@ -1,6 +1,5 @@
-class Forest::PriceList
+class Forest::Order
   include ForestLiana::Collection
 
-  action 'Autorizar'
   action 'Ver Resumen'
 end

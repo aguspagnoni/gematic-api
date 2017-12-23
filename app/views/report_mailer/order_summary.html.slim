@@ -20,17 +20,17 @@ table
       td = item.product.code
       td = item.product.name
       td = item.quantity
-      td = "$ #{item.product.standard_price}"
-      td = "$ #{item.product.price_within(@pricelist)}"
-      td = "$ #{item.product.price_within(@pricelist) * item.quantity}"
+      td = "$ #{item.product.standard_price.round(2)}"
+      td = "$ #{item.product.price_within(@pricelist).round(2)}"
+      td = "$ #{(item.product.price_within(@pricelist) * item.quantity).round(2)}"
   tr
     td Precio Total
     td
     td
     td
     td
-    td = "$ #{@order.gross_total} + IVA"
+    td = "$ #{@order.gross_total.round(2)} + IVA"
 .header_data
   b Ahorro
-  p = "$ #{@total_savings} (#{@savings_percentage}%)"
+  p = "$ #{@total_savings.round(2)} (#{@savings_percentage.round(2)}%)"
 
