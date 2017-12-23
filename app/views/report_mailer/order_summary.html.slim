@@ -9,28 +9,22 @@
 
 table
   tr
-    td.code      Codigo Producto
-    td.name      Nombre Producto
+    td.code      Codigo
+    td.name      Producto
     td.quantity  Cantidad
-    td.pricewout Precio sin Descuento
-    td.pricewith Precio con descuento
+    td.pricewith Precio
     td.subtotal  Subtotal
   - @order.order_items.each do |item|
     tr.row_data
       td = item.product.code
       td = item.product.name
       td = item.quantity
-      td = "$ #{item.product.standard_price.round(2)}"
-      td = "$ #{item.product.price_within(@pricelist).round(2)}"
-      td = "$ #{(item.product.price_within(@pricelist) * item.quantity).round(2)}"
+      td = "$ #{item.product.price(@pricelist).round(2)}"
+      td = "$ #{(item.product.price(@pricelist) * item.quantity).round(2)}"
   tr
-    td Precio Total
     td
+      b Precio Total
     td
     td
     td
     td = "$ #{@order.gross_total.round(2)} + IVA"
-.header_data
-  b Ahorro
-  p = "$ #{@total_savings.round(2)} (#{@savings_percentage.round(2)}%)"
-
