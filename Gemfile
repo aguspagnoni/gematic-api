@@ -31,6 +31,9 @@ gem 'sidekiq'
 # Pagination
 gem 'kaminari'
 
+# Thor scripting
+gem 'thor'
+
 # Admin
 gem 'forest_liana'
 

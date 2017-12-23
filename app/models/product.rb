@@ -13,7 +13,8 @@ class Product < ApplicationRecord
 
   has_paper_trail
 
-  COST_MULTIPLIER = ENV.fetch('COST_MULTIPLIER', 1.5).to_f
+  COST_MULTIPLIER      = ENV.fetch('COST_MULTIPLIER', 1.5).to_f
+  GEMATIC_BARCODE_BASE = '7462842' # 7-GMATIC in numbers ;)
 
   def price(price_list = nil)
     if price_list.blank?
