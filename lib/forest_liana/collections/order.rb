@@ -1,5 +1,7 @@
 class Forest::Order
   include ForestLiana::Collection
 
-  action 'Ver Resumen'
+  collection :orders
+
+  action 'Ver Resumen Pedido'
 end

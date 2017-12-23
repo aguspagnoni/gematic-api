@@ -22,8 +22,8 @@ Rails.application.routes.draw do
 
   mount ForestLiana::Engine => '/forest'
   namespace :forest do
-    post '/actions/autorizar'     => 'price_lists#authorize_list'
-    post '/actions/ver-resumen' => 'price_lists#send_summary'
-    post '/actions/ver-resumen' => 'orders#send_summary'
+    post '/actions/autorizar'           => 'price_lists#authorize_list'
+    post '/actions/ver-resumen-lista'   => 'price_lists#send_summary'
+    post '/actions/ver-resumen-pedido'  => 'orders#send_summary'
   end
 end
