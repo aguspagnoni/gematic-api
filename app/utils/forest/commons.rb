@@ -30,6 +30,7 @@ module Utils
         Rails.logger.info("Mail: #{forest_email}")
         if user.nil?
           Rails.logger.info("Intentando crear usuario: #{forest_email}")
+          Rails.logger.info("toda la data: #{forest_user}")
           user = AdminUser.create!(email: forest_email, name: forest_name, family_name: forest_family_name)
         end
         user
