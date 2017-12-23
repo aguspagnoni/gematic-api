@@ -27,6 +27,7 @@ module Utils
 
       def admin_user
         user = AdminUser.find_by(email: forest_email)
+        Rails.logger.info("Mail: #{forest_email}")
         if user.nil?
           Rails.logger.info("Intentando crear usuario: #{forest_email}")
           user = AdminUser.create!(email: forest_email, name: forest_name, family_name: forest_family_name)

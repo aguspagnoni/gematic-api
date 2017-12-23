@@ -15,7 +15,7 @@ if ForestLiana::UserSpace.const_defined?('AdminUserController')
     private
 
     def admin_tab?
-      params['collection'] == 'admin_users'
+      params['collection'] == 'admin_users' || params['collection'] == 'AdminUser'
     end
   end
 end
