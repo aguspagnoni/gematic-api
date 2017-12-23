@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223202035) do
+ActiveRecord::Schema.define(version: 20171223234459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,9 +84,9 @@ ActiveRecord::Schema.define(version: 20171223202035) do
     t.float    "cents",         default: 0.0
     t.integer  "product_id"
     t.integer  "price_list_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.boolean  "fixed",         default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "fixed",         default: true
     t.float    "final_price"
     t.index ["price_list_id"], name: "index_discounts_on_price_list_id", using: :btree
     t.index ["product_id", "price_list_id"], name: "index_discounts_on_product_id_and_price_list_id", using: :btree
