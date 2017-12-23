@@ -5,10 +5,10 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :render_nothing_not_found
 
   def render_nothing_bad_req
-    render nothing: true, status: :bad_request
+    head :bad_request
   end
 
   def render_nothing_not_found
-    render nothing: true, status: :not_found
+    head :not_found
   end
 end
