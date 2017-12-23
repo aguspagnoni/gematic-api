@@ -1,5 +1,5 @@
 # ForestLiana::ApplicationController takes care of the authentication for you.
-class Forest::PriceListsController < ForestLiana::ApplicationController
+class Forest::PriceListsController < Forest::GematicBaseController
 
   def send_summary
     ReportMailer.pricelist_summary(price_lists.first, admin_user).deliver_now
