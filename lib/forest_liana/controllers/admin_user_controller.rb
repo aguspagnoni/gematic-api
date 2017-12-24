@@ -15,7 +15,11 @@ if ForestLiana::UserSpace.const_defined?('AdminUserController')
     private
 
     def admin_tab?
-      params['collection'] == 'admin_users' || params['collection'] == 'AdminUser'
+      !input_field_search? && (params['collection'] == 'admin_users' || params['collection'] == 'AdminUser')
+    end
+
+    def input_field_search?
+      !params['search'].nil?
     end
   end
 end

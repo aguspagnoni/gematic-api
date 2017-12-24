@@ -12,12 +12,10 @@ class Discount < ApplicationRecord
     errors.add(:cents, :fixed_discount_change_cents) if fixed && cents_changed?
   end
 
-  def apply
-    fixed ? final_price : calculate_price_now
-  end
+  # CLASS METHODS
 
-  def calculate_price_now
-    (product.price_within(price_list) - cents).round(2)
+  def self.cents_for_desired_price(desired_price, price_list, product)
+    (product.price_within(price_list) - desired_price).round(2)
   end
 
   def self.empty_discount
@@ -30,6 +28,16 @@ class Discount < ApplicationRecord
                .order('created_at desc')
                .limit(1)
     discount.empty? ? empty_discount : discount.first
+  end
+
+  # INSTANCE METHODS
+
+  def apply
+    fixed ? final_price : calculate_price_now
+  end
+
+  def calculate_price_now
+    (product.price_within(price_list) - cents).round(2)
   end
 
   private
