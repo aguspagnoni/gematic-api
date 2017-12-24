@@ -11,7 +11,7 @@ class Forest::PriceListsController < Forest::GematicBaseController
   end
 
   def authorize_list
-    if admin_user.present? && able_to_authorize_list?(admin_user)
+    if admin_user.present? && able_to_authorize_list?
       msg    = 'Lista/s autorizadas correctamente'
       status = :ok
       save_authorization_details
