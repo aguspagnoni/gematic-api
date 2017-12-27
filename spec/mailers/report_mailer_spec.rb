@@ -8,6 +8,7 @@ RSpec.describe ReportMailer, type: :mailer do
     let(:mail) { ReportMailer.pricelist_summary(pricelist, admin_user) }
 
     it 'renders the html ok' do
+      byebug
       expect(mail.body).to include(pricelist.discounts.first.product.name)
     end
   end
