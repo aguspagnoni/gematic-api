@@ -6,7 +6,7 @@ describe Utils::Gematic::Functions do
 
   describe '#duplicate_order' do
     let!(:original_order) { create(:order_with_products) }
-    let(:new_order)      { Order.last }
+    let(:new_order)       { Order.last }
 
     it 'should create a new order with the same products and quantities' do
       expect { subject.duplicate_order(original_order) }
@@ -18,6 +18,17 @@ describe Utils::Gematic::Functions do
       expect(new_order.custom_price_list).to eq original_order.custom_price_list
       expect(new_order.name).to eq "Copia de Pedido Numero #{original_order.id} #{original_order.name}"
       expect(list_of_items(new_order)).to match_array(list_of_items(original_order))
+    end
+
+    context 'when order has custom price_list' do
+      let!(:price_list)     { create(:price_list_with_company_and_products) }
+      let!(:original_order) { create(:order_with_products, custom_price_list: price_list) }
+
+      before do
+        subject.duplicate_order(original_order)
+      end
+
+      it { expect(new_order.custom_price_list).to eq original_order.custom_price_list }
     end
   end
 
