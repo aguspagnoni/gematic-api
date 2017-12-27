@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-  has_many    :order_items
+  has_many    :order_items, dependent: :destroy
   has_many    :products, through: :order_items
   belongs_to  :custom_price_list, class_name: 'PriceList',
                                   foreign_key: 'custom_price_list_id',
