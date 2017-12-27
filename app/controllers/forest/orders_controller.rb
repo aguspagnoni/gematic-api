@@ -10,6 +10,14 @@ class Forest::OrdersController < Forest::GematicBaseController
     toast_response('No pudimos armar el reporte, contacte al Administrador del sitio', :bad_request)
   end
 
+  def duplicate
+    Utils::Gematic::Functions.duplicate_order(orders.first)
+  end
+
+  def from_price_list
+    Utils::Gematic::Functions.populate_order_with_price_list(orders.first)
+  end
+
   private
 
   def orders
