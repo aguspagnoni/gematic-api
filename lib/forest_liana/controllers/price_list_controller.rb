@@ -1,6 +1,6 @@
 if ForestLiana::UserSpace.const_defined?('PriceListController')
   ForestLiana::UserSpace::PriceListController.class_eval do
-    include Utils::Forest::Commons
+    include Utils::Forest::ControllerCommons
 
     NEED_SUPERADMIN ||= 'Para cambiar las condiciones de una lista de precios pactada,'\
                       'pregunte al administrador'.freeze

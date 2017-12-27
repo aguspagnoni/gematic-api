@@ -1,6 +1,6 @@
 if ForestLiana::UserSpace.const_defined?('ProductController')
   ForestLiana::UserSpace::ProductController.class_eval do
-    include Utils::Forest::Commons
+    include Utils::Forest::ControllerCommons
 
     def update
       PaperTrail.whodunnit = forest_email

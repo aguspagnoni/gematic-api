@@ -1,6 +1,6 @@
 if ForestLiana::UserSpace.const_defined?('AdminUserController')
   ForestLiana::UserSpace::AdminUserController.class_eval do
-    include Utils::Forest::Commons
+    include Utils::Forest::ControllerCommons
 
     def index
       if admin_tab? && !superadmin?

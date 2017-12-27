@@ -1,6 +1,6 @@
 if ForestLiana::UserSpace.const_defined?('ProductInputController')
   ForestLiana::UserSpace::ProductInputController.class_eval do
-    include Utils::Forest::Commons
+    include Utils::Forest::ControllerCommons
 
     def create
       set_admin_user

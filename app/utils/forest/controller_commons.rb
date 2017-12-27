@@ -1,6 +1,6 @@
 module Utils
   module Forest
-    module Commons
+    module ControllerCommons
       def toast(msg = '', failed = true)
         { "errors" => [ { "detail" => msg } ] }
       end
