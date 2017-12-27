@@ -11,11 +11,11 @@ class Forest::OrdersController < Forest::GematicBaseController
   end
 
   def duplicate
-    Utils::Gematic::Functions.duplicate_order(orders.first)
+    Gematic::Functions.duplicate_order(orders.first)
   end
 
   def from_price_list
-    Utils::Gematic::Functions.populate_order_with_price_list(orders.first)
+    Gematic::Functions.populate_order_with_price_list(orders.first)
   end
 
   private
