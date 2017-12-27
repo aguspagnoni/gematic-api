@@ -27,7 +27,7 @@ RSpec.describe Discount, type: :model do
 
   context 'dynamic discount' do
     let!(:dynamic_discount) do
-      create(:discount, price_list: price_list, product: product)
+      create(:discount, price_list: price_list, product: product, fixed: false)
     end
     # Note this will be run after update
     let(:final_price) { product.price_within(price_list) - dynamic_discount.cents }
