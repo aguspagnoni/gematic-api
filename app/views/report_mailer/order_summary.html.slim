@@ -15,6 +15,7 @@ table
     td.pricewith Precio
     td.subtotal  Subtotal
   - @order.order_items.each do |item|
+    - next if item.quantity == 0
     tr.row_data
       td = item.product.code
       td = item.product.name
@@ -27,4 +28,5 @@ table
     td
     td
     td
-    td = "$ #{@order.gross_total.round(2)} + IVA"
+    td
+      b = "$ #{@order.gross_total.round(2)} + IVA"
