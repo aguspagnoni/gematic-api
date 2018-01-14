@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171227015358) do
+ActiveRecord::Schema.define(version: 20180113204400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,7 @@ ActiveRecord::Schema.define(version: 20171227015358) do
     t.integer  "branch_office_id"
     t.integer  "custom_price_list_id"
     t.string   "name"
+    t.integer  "seller_company_id"
     t.index ["branch_office_id"], name: "index_orders_on_branch_office_id", using: :btree
     t.index ["company_id"], name: "index_orders_on_company_id", using: :btree
     t.index ["custom_price_list_id"], name: "index_orders_on_custom_price_list_id", using: :btree
@@ -189,6 +190,7 @@ ActiveRecord::Schema.define(version: 20171227015358) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
+  add_foreign_key "orders", "companies", column: "seller_company_id"
   add_foreign_key "orders", "price_lists", column: "custom_price_list_id"
   add_foreign_key "price_lists", "admin_users", column: "authorizer_id"
   add_foreign_key "product_inputs", "companies", column: "buyer_company_id"

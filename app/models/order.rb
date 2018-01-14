@@ -5,13 +5,16 @@ class Order < ApplicationRecord
                                   foreign_key: 'custom_price_list_id',
                                   optional: true
   belongs_to  :company
+  belongs_to  :seller_company, :class_name => 'Company'
   belongs_to  :branch_office
+
+  VALID_SELLER_CUITS = ['30691235021', '30711805393', '30711006997']
   STATUSES = [:not_confirmed, :confirmed, :with_invoice].freeze # defaults to 0 -> :not_confirmed
   enum status: STATUSES
 
   after_save  :reduce_products_stock
 
-  validate :office_belongs_to_company
+  validate :office_belongs_to_company, :who_can_buy_products
 
   scope :due_today, -> { where(delivery_date: Time.zone.today) }
 
@@ -36,9 +39,17 @@ class Order < ApplicationRecord
   end
 
   def office_belongs_to_company
-    if branch_office.company != company
+    if branch_office.nil?
+      errors.add(:branch_office, "Debe eligir la oficina de la empresa")
+    elsif branch_office.company != company
       errors.add(:branch_office, "La oficina tiene que pertenecer a #{company&.name}")
     end
+  end
+
+  def who_can_buy_products
+    seller_cuit = seller_company&.cuit&.tr('-', '')
+    valid_company = VALID_SELLER_CUITS.include?(seller_cuit)
+    errors.add(:seller_company, :incorrect_seller_company) unless valid_company
   end
 
   def reduce_products_stock

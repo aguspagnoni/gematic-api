@@ -2,8 +2,9 @@ FactoryGirl.define do
   factory :order do
     status        0
     delivery_date "2017-02-26"
-    company       { create(:company) }
-    branch_office { create(:branch_office, company: company) }
+    company         { create(:company) }
+    seller_company  { create(:company, cuit: Order::VALID_SELLER_CUITS.first) }
+    branch_office   { create(:branch_office, company: company) }
   end
 
   factory :order_with_products, parent: :order do
