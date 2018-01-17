@@ -5,6 +5,7 @@ module Utils
       order = Order.new(company: original_order.company,
                         branch_office: original_order.branch_office,
                         custom_price_list: original_order.custom_price_list,
+                        seller_company: original_order.seller_company,
                         name: "Copia de Pedido Numero #{original_order.id} #{original_order.name}")
       original_order.order_items.each do |order_item|
         order.order_items << OrderItem.new(product: order_item.product, quantity: order_item.quantity)

@@ -49,7 +49,7 @@ class Order < ApplicationRecord
   def who_can_buy_products
     seller_cuit = seller_company&.cuit&.tr('-', '')
     valid_company = VALID_SELLER_CUITS.include?(seller_cuit)
-    errors.add(:seller_company, :incorrect_seller_company) unless valid_company
+    errors.add(:seller_company_id, :incorrect_seller_company) unless valid_company
   end
 
   def reduce_products_stock

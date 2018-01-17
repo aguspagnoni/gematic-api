@@ -8,7 +8,6 @@ es:
       subject: 'Confirmar Cuenta'
   errors:
     messages:
-      record_invalid: el objeto es invalido
       expires_validation: tiene que ser posterior a la fecha de activación
       price_list_recursion: tiene que ser distinto a la siguiente lista
       discount_cents_greater_product_cost: tiene que ser menor al costo del producto
@@ -18,12 +17,22 @@ es:
       incorrect_buyer_company: La empresa que COMPRA debe ser GEMATIC, ILIT o FAMTECH
       incorrect_seller_company: La empresa que VENDE debe ser GEMATIC, ILIT o FAMTECH
   activerecord:
+    attributes:
+      order:
+        seller_company: Empresa facturante
     errors:
+      messages:
+        record_invalid: "Error de validación: %{errors}"
+        restrict_dependent_destroy:
+            has_one: No se puede eliminar el registro porque existe un %{record} dependiente
+            has_many: No se puede eliminar el registro porque existen %{record} dependientes
       models:
         order:
           attributes:
+            seller_company:
+              required: es requerida
             branch_office:
-              required: 'Debe eligir la oficina de la empresa'
+              required: necesita elegir la oficina de la empresa'
         order_item:
           attributes:
             quantity:

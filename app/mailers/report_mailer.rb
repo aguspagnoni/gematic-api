@@ -41,6 +41,7 @@ class ReportMailer < ApplicationMailer
       { label: 'Empresa',                   text: @order.company.name },
       { label: 'Entrega estimada (d/m/a)',  text: @order.delivery_date.strftime("%d/%m/%Y") },
       { label: 'Oficina > Site',            text: @order.branch_office.name },
+      { label: 'Oficina > Site',            text: @order.branch_office.address },
       { label: 'Oficina > Codigo Postal',   text: @order.branch_office.zipcode },
       { label: 'Oficina > Telefono',        text: @order.branch_office.phone },
       { label: 'Agente responsable',        text: "#{@recipient.name} (#{@recipient.email})" }
