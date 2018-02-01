@@ -18,6 +18,8 @@ class Order < ApplicationRecord
 
   scope :due_today, -> { where(delivery_date: Time.zone.today) }
 
+  has_paper_trail
+
   def gross_total
     @gross_total ||= sum_on_items { |item| item.quantity * item.product.price(price_list) }
   end
