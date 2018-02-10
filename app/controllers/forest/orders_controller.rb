@@ -1,12 +1,11 @@
 # ForestLiana::ApplicationController takes care of the authentication for you.
 class Forest::OrdersController < Forest::GematicBaseController
-
   def send_summary
     ReportMailer.order_summary(orders.first, admin_user).deliver_now
     toast_response('Revise su correo electronico', :ok)
-  rescue => e
+  rescue StandardError => e
     Rails.logger.debug("Error al armar ReportsMailer: #{e}")
-    Rails.logger.debug("#{e.backtrace.first(5)}")
+    Rails.logger.debug(e.backtrace.first(5).to_s)
     toast_response('No pudimos armar el reporte, contacte al Administrador del sitio', :bad_request)
   end
 
@@ -15,7 +14,12 @@ class Forest::OrdersController < Forest::GematicBaseController
   end
 
   def from_price_list
-    Gematic::Functions.populate_order_with_price_list(orders.first)
+    price_list = order.custom_price_list || PriceList.for_company(order.company)
+    if price_list.nil?
+      toast_response('No hay lista de precio de donde basarse', :bad_request)
+    else
+      Gematic::Functions.populate_order_with_price_list(orders.first, price_list)
+    end
   end
 
   private

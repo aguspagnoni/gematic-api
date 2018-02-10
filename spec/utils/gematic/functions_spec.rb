@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Utils::Gematic::Functions do
-
   subject { described_class }
 
   describe '#duplicate_order' do
@@ -39,25 +38,9 @@ describe Utils::Gematic::Functions do
 
       it 'fills the order with products from the existing PriceList' do
         expect(price_list.products.count).to be_positive
-        expect { subject.populate_order_with_price_list(order) }
+        expect { subject.populate_order_with_price_list(order, price_list) }
           .to change(OrderItem, :count).by(price_list.products.count)
         expect(Order.last.order_items.pluck(:quantity)).to all eq 0
-      end
-    end
-
-    context 'when the order has a custom PriceList' do
-      let!(:price_list)        { create(:price_list_with_company_and_products) }
-      let!(:custom_price_list) { create(:price_list_with_company_and_products) }
-      let!(:product)            { create(:product) }
-      let!(:discount)           { create(:discount, product: product, price_list: custom_price_list)}
-
-      let(:order)              { create(:order, company: price_list.company,
-                                                custom_price_list: custom_price_list) }
-
-      it 'fills the order with products from the custom PriceList' do
-        expect { subject.populate_order_with_price_list(order) }
-          .to change(OrderItem, :count).by(custom_price_list.products.count)
-        expect(Order.last.products).to include(product)
       end
     end
   end

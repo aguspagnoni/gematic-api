@@ -13,8 +13,7 @@ module Utils
       order.save!
     end
 
-    def self.populate_order_with_price_list(order)
-      price_list = order.custom_price_list || PriceList.for_company(order.company)
+    def self.populate_order_with_price_list(order, price_list)
       price_list.products.each do |product|
         new_item = OrderItem.new(product: product,
                                  quantity: 0,
