@@ -27,5 +27,6 @@ Rails.application.routes.draw do
     post '/actions/ver-resumen-pedido'               => 'orders#send_summary'
     post '/actions/duplicar-pedido'                  => 'orders#duplicate'
     post '/actions/cargar-productos-desde-lista'     => 'orders#from_price_list'
+    post '/actions/cambiar-cantidad'                 => 'order_items#change_quantity'
   end
 end
