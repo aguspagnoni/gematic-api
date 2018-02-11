@@ -1,7 +1,7 @@
 class Forest::OrderItem
   include ForestLiana::Collection
 
-  collection :order_item
+  collection :OrderItem
 
   action 'Cambiar cantidad', fields: [{
     field: 'quantity',
