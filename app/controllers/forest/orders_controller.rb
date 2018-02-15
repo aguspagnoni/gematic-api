@@ -25,6 +25,6 @@ class Forest::OrdersController < Forest::GematicBaseController
   private
 
   def order
-    Order.where(id: params[:data][:attributes][:ids])
+    Order.where(id: params[:data][:attributes][:ids]).first
   end
 end
