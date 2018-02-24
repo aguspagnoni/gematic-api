@@ -39,7 +39,7 @@ class ReportMailer < ApplicationMailer
   def order_header_data_hash
     [
       { label: 'Empresa',                   text: @order.company.name },
-      { label: 'Entrega estimada (d/m/a)',  text: @order.delivery_date.strftime("%d/%m/%Y") },
+      { label: 'Entrega estimada (d/m/a)',  text: (@order.delivery_date&.strftime("%d/%m/%Y") || 'Sin fecha asignada') },
       { label: 'Oficina > Site',            text: @order.branch_office.name },
       { label: 'Oficina > Site',            text: @order.branch_office.address },
       { label: 'Oficina > Codigo Postal',   text: @order.branch_office.zipcode },
