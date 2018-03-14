@@ -30,7 +30,6 @@ class ReportMailer < ApplicationMailer
       { label: 'Empresa',              text: @pricelist.company.name },
       { label: 'Valido desde (d/m/a)', text: @pricelist.valid_since.strftime("%d/%m/%Y") },
       { label: 'Valido hasta (d/m/a)', text: @pricelist.expires.strftime("%d/%m/%Y") },
-      { label: 'Descuento General',    text: @pricelist.general_discount },
       { label: 'Agente responsable',   text: "#{@recipient.name} (#{@recipient.email})" }
     ]
   end
