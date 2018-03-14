@@ -11,13 +11,9 @@ table
   tr
     td Codigo Producto
     td Nombre Producto
-    td Descuento
-    td Precio congelado?
-    td Precio despues del descuento (hoy)
+    td Precio
   - @pricelist.discounts.each do |discount|
     tr.row_data
       td = discount.product.code
       td = discount.product.name
-      td = "$ #{discount.cents}"
-      td = discount.fixed ? 'si' : 'no'
       td = "$ #{discount.final_price || discount.calculate_price_now}"

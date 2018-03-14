@@ -14,7 +14,6 @@ class ReportMailer < ApplicationMailer
     @pricelist      = order.price_list
     @recipient      = recipient
     @header_data    = order_header_data_hash
-    @savings_percentage = 100 * (1 - order.gross_total / order.gross_without_discount)
     @total_savings  = order.gross_without_discount - order.gross_total
     attachment_name = "resumen_de_pedido_#{order.id}.html"
     attachments[attachment_name] = render :order_summary
