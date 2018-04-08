@@ -1,12 +1,24 @@
 # ForestLiana::ApplicationController takes care of the authentication for you.
 class Forest::OrdersController < Forest::GematicBaseController
   def send_summary
-    ReportMailer.order_summary(order, admin_user).deliver_now
-    toast_response('Revise su correo electronico', :ok)
+    if order.not_confirmed?
+      toast_response('Necesita ser autorizado', :bad_request)
+    else
+      ReportMailer.order_summary(order, admin_user).deliver_now
+      toast_response('Revise su correo electronico', :ok)
+    end
   rescue StandardError => e
     Rails.logger.debug("Error al armar ReportsMailer: #{e}")
     Rails.logger.debug(e.backtrace.first(5).to_s)
     toast_response('No pudimos armar el reporte, contacte al Administrador del sitio', :bad_request)
+  end
+
+  def authorize
+    order.confirmed!
+    toast_response('Autorizado ok!', :ok)
+  rescue ActiveRecord::RecordInvalid => error
+    toast_response('No se pudo autorizar, el equipo tecnico ha sido notificado', :bad_request)
+    Rollbar.error(order, error)
   end
 
   def duplicate
