@@ -14,11 +14,26 @@ class Forest::OrdersController < Forest::GematicBaseController
   end
 
   def authorize
-    order.confirmed!
-    toast_response('Autorizado ok!', :ok)
+    if admin_user.back_office?
+      toast_response('Requiere autorizacion de un supervisor', :bad_request)
+    else
+      order.confirmed!
+      toast_response('Autorizado ok!', :ok)
+    end
   rescue ActiveRecord::RecordInvalid => error
     toast_response('No se pudo autorizar, el equipo tecnico ha sido notificado', :bad_request)
     Rollbar.error(order, error)
+  end
+
+  def download
+    if order.not_confirmed?
+      send_data 'Necesita ser autorizado'
+    else
+      mail = ReportMailer.order_summary(order, admin_user)
+      doc  = mail.attachments.first
+      data = doc.body.raw_source.tr("\n", '')
+      send_data data, filename: doc.filename, type: 'text/html', disposition: 'attachment'
+    end
   end
 
   def duplicate
@@ -37,6 +52,6 @@ class Forest::OrdersController < Forest::GematicBaseController
   private
 
   def order
-    Order.where(id: params[:data][:attributes][:ids]).first
+    ::Order.where(id: params[:data][:attributes][:ids]).first
   end
 end
