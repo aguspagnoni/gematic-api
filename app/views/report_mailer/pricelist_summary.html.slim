@@ -1,4 +1,5 @@
 .title
+  h1.red = "#{@pricelist.authorized? ? '' : 'BORRADOR'}"
   h1 = @pricelist.name
   h3 = Date.today.strftime("%d/%m/%Y")
 

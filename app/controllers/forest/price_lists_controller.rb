@@ -1,14 +1,10 @@
 # ForestLiana::ApplicationController takes care of the authentication for you.
 class Forest::PriceListsController < Forest::GematicBaseController
   def send_summary
-    if price_lists.first.authorized?
-      mail = ReportMailer.pricelist_summary(price_lists.first, admin_user)
-      doc  = mail.attachments.first
-      data = doc.body.raw_source.tr("\n", '')
-      send_data data, filename: doc.filename, type: 'text/html', disposition: 'attachment'
-    else
-      send_data 'Necesita ser autorizado'
-    end
+    mail = ReportMailer.pricelist_summary(price_lists.first, admin_user)
+    doc  = mail.attachments.first
+    data = doc.body.raw_source.tr("\n", '')
+    send_data data, filename: doc.filename, type: 'text/html', disposition: 'attachment'
   rescue StandardError => e
     Rails.logger.debug("Error al armar ReportsMailer: #{e}")
     Rails.logger.debug(e.backtrace.first(5))
