@@ -31,19 +31,4 @@ RSpec.describe Category, type: :model do
       expect { category_a.update!(supercategory: category_a) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
-
-  context 'when products exists for different categories' do
-    let(:product_a) { create(:product) }
-    let(:product_b) { create(:product) }
-    let(:product_c) { create(:product) }
-
-    before do
-      product_a.categories << category_a
-      product_b.categories << category_b
-      product_c.categories << category_b
-    end
-
-    it { expect(category_a.products).to match_array product_a }
-    it { expect(category_b.products).to match_array [product_b, product_c] }
-  end
 end

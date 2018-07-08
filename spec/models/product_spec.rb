@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
-  it { should have_and_belong_to_many :categories }
+  it { should belong_to :category }
   it { should have_many :orders }
   it { should have_many :order_items }
   it { should validate_numericality_of(:gross_price).is_greater_than 0 }

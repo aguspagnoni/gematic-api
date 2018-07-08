@@ -6,5 +6,6 @@ FactoryGirl.define do
     gross_price   { Faker::Number.number(5) }
     cost          { Faker::Number.number(3) }
     stock         { Faker::Number.number(2) }
+    category
   end
 end
