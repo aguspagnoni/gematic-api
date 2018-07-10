@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180708193111) do
+ActiveRecord::Schema.define(version: 20180710021650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "pg_trgm"
 
   create_table "admin_users", force: :cascade do |t|
     t.integer  "privilege",       default: 0
@@ -161,8 +162,10 @@ ActiveRecord::Schema.define(version: 20180708193111) do
     t.integer  "stock",       default: 0
     t.string   "code"
     t.integer  "category_id"
+    t.index "name gin_trgm_ops", name: "product_name_like_index", using: :gin
     t.index ["category_id"], name: "index_products_on_category_id", using: :btree
     t.index ["code"], name: "index_products_on_code", unique: true, using: :btree
+    t.index ["name"], name: "index_products_on_name", using: :btree
     t.index ["old_code"], name: "index_products_on_old_code", unique: true, using: :btree
   end
 
