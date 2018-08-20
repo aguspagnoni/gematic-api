@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ReportMailer, type: :mailer do
   let(:body)              { mail.attachments.first.body }
-  let(:budget_image_name) { 'borrador.png' }
+  let(:budget_div)        { 'BORRADOR' }
 
   describe 'pricelist_summary' do
     let(:pricelist)  { create(:price_list_with_company_and_products) }
@@ -24,19 +24,19 @@ RSpec.describe ReportMailer, type: :mailer do
       let(:order) { create(:order, status: :not_confirmed) }
       it 'renders the html with a special text' do
         # write_file_and_open(body)
-        expect(body).to include(budget_image_name)
+        expect(body).to include(budget_div)
       end
     end
 
     context 'when the order is <<with_invoice>>' do
       let(:order) { create(:order, status: :with_invoice) }
       it 'renders the html' do
-        expect(body).not_to include(budget_image_name)
+        expect(body).not_to include(budget_div)
       end
     end
 
     it 'renders the html' do
-      expect(body).not_to include(budget_image_name)
+      expect(body).not_to include(budget_div)
     end
   end
 end
