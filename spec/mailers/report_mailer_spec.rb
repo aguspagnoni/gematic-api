@@ -23,7 +23,7 @@ RSpec.describe ReportMailer, type: :mailer do
     context 'when the order is <<not_confirmed>>' do
       let(:order) { create(:order, status: :not_confirmed) }
       it 'renders the html with a special text' do
-        write_file_and_open(body)
+        # write_file_and_open(body)
         expect(body).to include(budget_image_name)
       end
     end
