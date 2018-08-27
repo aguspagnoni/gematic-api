@@ -45,6 +45,9 @@ gem 'paper_trail'
 gem 'barby'
 gem 'chunky_png'
 
+# Misc
+gem 'normalizr'
+
 group :development, :test do
   gem 'database_cleaner'
   gem 'byebug', platform: :mri
