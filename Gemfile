@@ -2,7 +2,12 @@ source 'https://rubygems.org'
 
 ruby '2.4.0'
 gem 'rails', '~> 5.0.0'
+
+# Database
 gem 'pg'
+gem 'pghero'
+gem 'pg_query', '>= 0.9.0'
+
 gem 'puma', '~> 3.0'
 gem 'redis', '~> 3.0'
 

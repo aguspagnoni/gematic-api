@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :branch_offices
   mount Localtower::Engine, at: 'localtower' if Rails.env.development?
   mount Sidekiq::Web => '/sidekiq'
+  mount PgHero::Engine, at: "pghero"
+
 
   post 'user_token' => 'user_token#create'
   resources :admin_users
