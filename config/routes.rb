@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   namespace :forest do
     post '/actions/autorizar'                        => 'price_lists#authorize_list'
     post '/actions/ver-resumen-lista'                => 'price_lists#send_summary'
+    post '/actions/duplicar-list'                    => 'price_lists#duplicate'
     post '/actions/ver-pedido-por-mail'              => 'orders#send_summary'
     post '/actions/autorizar-pedido'                 => 'orders#authorize'
     post '/actions/descargar-pedido'                 => 'orders#download'

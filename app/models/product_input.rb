@@ -14,7 +14,7 @@ class ProductInput < ApplicationRecord
   before_save :product_input_already_registered
   after_save  :update_product_stock
 
-  VALID_BUYERS = ['ILIT FACILITY SERVICES S.A.', 'FAMTECH SA', 'GEMATIC SRL']
+  VALID_BUYERS = ["ilit facility services s.a.", "famtech sa", "gematic srl"]
 
   private
 
@@ -30,7 +30,7 @@ class ProductInput < ApplicationRecord
   end
 
   def who_can_buy_products
-    valid_company = VALID_BUYERS.include?(buyer_company&.razon_social)
+    valid_company = VALID_BUYERS.include?(buyer_company&.razon_social&.downcase)
     errors.add(:buyer_company, :incorrect_buyer_company) unless valid_company
   end
 

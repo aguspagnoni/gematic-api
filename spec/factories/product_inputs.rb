@@ -7,6 +7,6 @@ FactoryGirl.define do
     admin_user
     product
     seller_company    { create(:company) }
-    buyer_company     { create(:company, razon_social: ProductInput::VALID_BUYERS.sample) }
+    buyer_company     { Company.find_or_create_by(razon_social: ProductInput::VALID_BUYERS.sample) }
   end
 end

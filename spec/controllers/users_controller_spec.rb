@@ -36,7 +36,7 @@ RSpec.describe UsersController, type: :controller do
   end
 
   let(:invalid_attributes_errors) do
-    %w(company email password)
+    %w(email password)
   end
 
   let(:no_session) { {} }

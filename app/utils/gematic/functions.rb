@@ -22,5 +22,18 @@ module Utils
       end
       order.save!
     end
+
+    def self.duplicate_list(original_list)
+      new_list = original_list.dup
+      new_list.name = 'Copy of ' + new_list.name
+      new_list.authorized_at = nil
+      new_list.authorizer_id = nil
+      original_list.discounts.each do |original_discount|
+        new_discount = original_discount.dup
+        new_discount.price_list = new_list
+        new_list.discounts << new_discount
+      end
+      new_list.save
+    end
   end
 end

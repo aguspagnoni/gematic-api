@@ -31,6 +31,27 @@ describe Utils::Gematic::Functions do
     end
   end
 
+  describe '#duplicate_list' do
+    let(:admin_user) { create(:admin_user) }
+    let!(:original_price_list) do
+      create(:price_list_with_company_and_products, authorized_at: Time.zone.now,
+                                                    authorizer_id: admin_user.id)
+    end
+    let(:new_list) { PriceList.last }
+
+    it 'should create a new list with same everything but the name' do
+      expect { subject.duplicate_list(original_price_list) }
+        .to change(PriceList, :count).by(1)
+      expect(new_list.company).to eq(original_price_list.company)
+      expect(new_list.name).to eq('Copy of ' + original_price_list.name)
+      expect(new_list.expires).to eq(original_price_list.expires)
+      expect(new_list.valid_since).to eq(original_price_list.valid_since) # WARN: this may lead to unespected behaviour if there is an order to the company without a Custom PriceList, because this new duplicated pricelist will be the chosen one for upcoming orders.
+      expect(new_list.authorized_at).to be_nil
+      expect(new_list.authorizer_id).to be_nil
+      expect(list_of_discounts(new_list)).to match_array(list_of_discounts(original_price_list))
+    end
+  end
+
   describe '#populate_order_with_price_list' do
     context 'when the order has no custom PriceList' do
       let!(:price_list) { create(:price_list_with_company_and_products) }
@@ -48,4 +69,8 @@ end
 
 def list_of_items(order)
   order.order_items.pluck(:product_id, :quantity)
+end
+
+def list_of_discounts(price_list)
+  price_list.discounts.pluck(:cents, :product_id, :fixed, :final_price)
 end

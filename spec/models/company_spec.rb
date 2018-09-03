@@ -14,15 +14,6 @@ RSpec.describe Company, type: :model do
       end
     end
 
-    context 'when similar razon_social exists' do
-      let!(:existing_company) { create(:company, razon_social: 'ejemplo S.a') }
-      let(:new_company)       { build(:company, razon_social: 'EJEMPLO S.A.') }
-
-      it 'adds razon_social error' do
-        expect(new_company).not_to be_valid
-      end
-    end
-
     context 'when similar cuit exists' do
       let!(:existing_company) { create(:company, cuit: '30-11222333-1') }
       let(:new_company)       { build(:company, cuit: '30-112223331') }

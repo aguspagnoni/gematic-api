@@ -23,6 +23,10 @@ class Forest::PriceListsController < Forest::GematicBaseController
     toast_response(msg, status)
   end
 
+  def duplicate
+    Gematic::Functions.duplicate_list(price_lists.first)
+  end
+
   private
 
   def able_to_authorize_list?

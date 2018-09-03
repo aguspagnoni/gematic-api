@@ -7,5 +7,5 @@ class Company < ApplicationRecord
 
   validates :cuit, :razon_social, :name, presence: true, uniqueness: true
 
-  normalize :cuit, :razon_social, :name, with: [:downcase, :strip, :without_strange_chars]
+  normalize :cuit, :name, with: [:downcase, :strip, :without_strange_chars]
 end

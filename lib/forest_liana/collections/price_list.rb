@@ -4,5 +4,6 @@ class Forest::PriceList
   collection :price_lists
 
   action 'Autorizar'
+  action 'Duplicar Lista'
   action 'Ver Resumen Lista', download: true
 end
