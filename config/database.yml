@@ -2,6 +2,7 @@ development: &default
   adapter: postgresql
   encoding: unicode
   # database: d2uf2v7urciqdi #
+  template: template0
   database: gematic-api_development
   pool: 5
   username: <%= ENV.fetch('DB_USERNAME', 'gematic-api') %>
