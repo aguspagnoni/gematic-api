@@ -9,7 +9,7 @@ class Order < ApplicationRecord
   belongs_to  :branch_office
 
   VALID_SELLER_CUITS = ['30691235021', '30711805393', '30711006997']
-  STATUSES = [:not_confirmed, :confirmed, :with_invoice].freeze # defaults to 0 -> :not_confirmed
+  STATUSES = [:presupuesto, :confirmado, :con_factura, :anulado].freeze # defaults to 0 -> :presupuesto
   enum status: STATUSES
 
   after_save :reduce_products_stock
@@ -55,7 +55,7 @@ class Order < ApplicationRecord
   end
 
   def reduce_products_stock
-    if changes['status'] == ['not_confirmed', 'confirmed']
+    if changes['status'] == ['presupuesto', 'confirmado']
       order_items.each do |item|
         item.product.reduce_stock(item.quantity)
       end

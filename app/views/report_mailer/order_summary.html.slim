@@ -2,7 +2,7 @@
   h1 = @order.seller_company&.razon_social
   h1 Resumen de Orden #{@order.id}
   h3 = Date.today.strftime("%d/%m/%Y")
-  - if @order.not_confirmed?
+  - if @order.presupuesto?
     div style="transform: rotate(-45deg);font-size: 64px;opacity: 0.3;position: absolute;left: 0;right: 0;top: 50%;margin-left:  auto;margin-right: auto;" BORRADOR
 
 - @header_data.each do |data|

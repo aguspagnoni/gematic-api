@@ -10,7 +10,7 @@ describe Utils::Gematic::Functions do
     it 'should create a new order with the same products and quantities' do
       expect { subject.duplicate_order(original_order) }
         .to change(Order, :count).by(1)
-      expect(new_order.status).to eq 'not_confirmed'
+      expect(new_order.status).to eq 'presupuesto'
       expect(new_order.delivery_date).to eq nil
       expect(new_order.company).to eq original_order.company
       expect(new_order.branch_office).to eq original_order.branch_office

@@ -17,11 +17,11 @@ RSpec.describe ReportMailer, type: :mailer do
   describe 'order_summary' do
     let(:pricelist)  { create(:price_list_with_company_and_products) }
     let(:admin_user) { create(:admin_user) }
-    let(:order)      { create(:order, status: :confirmed) }
+    let(:order)      { create(:order, status: :confirmado) }
     let(:mail) { ReportMailer.order_summary(order, admin_user) }
 
     context 'when the order is <<not_confirmed>>' do
-      let(:order) { create(:order, status: :not_confirmed) }
+      let(:order) { create(:order, status: :presupuesto) }
       it 'renders the html with a special text' do
         # write_file_and_open(body)
         expect(body).to include(budget_div)
@@ -29,7 +29,7 @@ RSpec.describe ReportMailer, type: :mailer do
     end
 
     context 'when the order is <<with_invoice>>' do
-      let(:order) { create(:order, status: :with_invoice) }
+      let(:order) { create(:order, status: :con_factura) }
       it 'renders the html' do
         expect(body).not_to include(budget_div)
       end

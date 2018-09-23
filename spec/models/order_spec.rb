@@ -23,7 +23,7 @@ RSpec.describe Order, type: :model do
 
   context 'status' do
     let(:order) {
-      create(:order, status: :not_confirmed, company: company,
+      create(:order, status: :presupuesto, company: company,
                      branch_office: office)
     }
 
@@ -32,7 +32,7 @@ RSpec.describe Order, type: :model do
     end
 
     it 'changes status accordingly' do
-      expect { order.confirmed! }.to change(order, :status).from('not_confirmed').to('confirmed')
+      expect { order.confirmado! }.to change(order, :status).from('presupuesto').to('confirmado')
     end
 
     context 'stock of a product after change of state' do
@@ -63,7 +63,7 @@ RSpec.describe Order, type: :model do
 
         it 'alter product stock' do
           expect do
-            order.confirmed!
+            order.confirmado!
             product.reload
             product2.reload
           end.to change(product, :stock).by(-amount_ordered)
@@ -75,7 +75,7 @@ RSpec.describe Order, type: :model do
         before { create_order }
 
         it 'does not alter product stock' do
-          expect { order.with_invoice! }
+          expect { order.con_factura! }
             .not_to change(product.reload, :stock)
         end
       end
