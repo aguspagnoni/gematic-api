@@ -71,8 +71,56 @@ RSpec.describe Order, type: :model do
         end
       end
 
+      context 'order status DEFAULT -> CONFIRMED -> ANULATED' do
+        before do
+          create_order
+          create_order2
+          order.confirmado!
+        end
+
+        it 'leaves product stock as it was in the first place' do
+          expect do
+            order.anulado!
+            product.reload
+            product2.reload
+          end.to change(product, :stock).by(0)
+            .and change(product2, :stock).by(0)
+        end
+      end
+
+      context 'order status DEFAULT -> CONFIRMED -> WITH_INVOICE -> ANULATED' do
+        before do
+          create_order
+          create_order2
+          order.confirmado!
+          order.con_factura!
+        end
+
+        it 'leaves product stock as it was in the first place' do
+          expect do
+            order.anulado!
+            product.reload
+            product2.reload
+          end.to change(product, :stock).by(0)
+            .and change(product2, :stock).by(0)
+        end
+      end
+
+      context 'order status NOT_CONFIRMED -> WITH_INVOICE' do
+        before do
+          create_order
+        end
+
+        it 'throws error, as it has to first pass through confirmed state' do
+          expect { order.con_factura! }.to raise_error
+        end
+      end
+
       context 'order status CONFIRMED -> WITH_INVOICE' do
-        before { create_order }
+        before do
+          create_order
+          order.confirmado!
+        end
 
         it 'does not alter product stock' do
           expect { order.con_factura! }

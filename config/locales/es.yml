@@ -16,6 +16,7 @@ es:
       product_input_already_registered: El comprobante ya estaba ingresado
       incorrect_buyer_company: La empresa que COMPRA debe ser GEMATIC, ILIT o FAMTECH
       incorrect_seller_company: La empresa que VENDE debe ser GEMATIC, ILIT o FAMTECH
+      order_invalid_status_change: Cambio de estado no es valido.
   activerecord:
     attributes:
       order:

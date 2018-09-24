@@ -12,9 +12,11 @@ class Order < ApplicationRecord
   STATUSES = [:presupuesto, :confirmado, :con_factura, :anulado].freeze # defaults to 0 -> :presupuesto
   enum status: STATUSES
 
-  after_save :reduce_products_stock
+  after_save  :change_stock
 
-  validate :office_belongs_to_company, :who_can_buy_products
+  validate :validate_correct_status_transitions
+  validate :office_belongs_to_company
+  validate :who_can_buy_products
 
   scope :due_today, -> { where(delivery_date: Time.zone.today) }
 
@@ -54,10 +56,29 @@ class Order < ApplicationRecord
     errors.add(:seller_company_id, :incorrect_seller_company) unless valid_company
   end
 
-  def reduce_products_stock
-    if changes['status'] == ['presupuesto', 'confirmado']
+  def validate_correct_status_transitions
+    correct_transitions = [
+      ['presupuesto', 'confirmado'],
+      ['presupuesto', 'anulado'],
+      ['confirmado',  'con_factura'],
+      ['confirmado',  'anulado'],
+      ['con_factura', 'anulado'],
+      ['anulado',     'presupuesto']
+    ]
+    if changes['status'] && !correct_transitions.include?(changes['status'])
+      errors.add(:status, :order_invalid_status_change)
+    end
+  end
+
+  def change_stock
+    case changes['status']
+    when ['presupuesto', 'confirmado']
       order_items.each do |item|
         item.product.reduce_stock(item.quantity)
+      end
+    when ['confirmado',  'anulado'], ['con_factura', 'anulado']
+      order_items.each do |item|
+        item.product.reduce_stock(-item.quantity)
       end
     end
   end
