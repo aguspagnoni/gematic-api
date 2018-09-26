@@ -13,7 +13,7 @@ class Forest::OrdersController < Forest::GematicBaseController
     if admin_user.back_office?
       toast_response('Requiere autorizacion de un supervisor', :bad_request)
     else
-      order.confirmed!
+      order.confirmado!
       toast_response('Autorizado ok!', :ok)
     end
   rescue ActiveRecord::RecordInvalid => error
